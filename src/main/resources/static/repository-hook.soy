@@ -11,6 +11,7 @@
         {param labelContent: 'url'  /}
         {param descriptionText: 'Url for the HTTP GET request' /}
         {param errorTexts: $errors ? $errors['url'] : null /}
+        {param extraClasses: 'long-field' /}
     {/call}
     {call aui.form.textField}
         {param id: 'user' /}
@@ -19,7 +20,7 @@
         {param descriptionText: 'User for the authentication.' /}
         {param errorTexts: $errors ? $errors['user'] : null /}
     {/call}
-    {call aui.form.textField}
+    {call aui.form.passwordField}
         {param id: 'pass' /}
         {param initialValue: $config['pass'] /}
         {param labelContent: 'pass'  /}
