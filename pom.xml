@@ -1,23 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.aeffle.stash.plugin</groupId>
     <artifactId>stash-http-get-post-receive-hook</artifactId>
     <version>1.0-SNAPSHOT</version>
-
     <organization>
         <name>Aeffle</name>
         <url>http://www.aeffle.de/</url>
     </organization>
-
     <name>stash-http-get-post-receive-hook</name>
     <description>This is the de.aeffle.stash.plugin:stash-http-get-post-receive-hook plugin for Atlassian Stash.</description>
     <packaging>atlassian-plugin</packaging>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -29,7 +23,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
     <dependencies>
         <dependency>
             <groupId>com.atlassian.stash</groupId>
@@ -62,7 +55,6 @@
             <artifactId>commons-lang</artifactId>
             <version>2.6</version>
         </dependency>
-
         <!-- WIRED TEST RUNNER DEPENDENCIES -->
         <dependency>
             <groupId>com.atlassian.plugins</groupId>
@@ -81,8 +73,13 @@
             <artifactId>gson</artifactId>
             <version>2.2.2-atlassian-1</version>
         </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.8.5</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -97,7 +94,7 @@
                             <instanceId>stash</instanceId>
                             <version>${stash.version}</version>
                             <dataVersion>${stash.data.version}</dataVersion>
-                        </product>  
+                        </product>
                     </products>
                 </configuration>
             </plugin>
@@ -110,16 +107,14 @@
             </plugin>
         </plugins>
     </build>
-    
     <properties>
         <stash.version>2.2.0</stash.version>
         <stash.data.version>2.2.0</stash.data.version>
         <amps.version>4.1.5</amps.version>
         <plugin.testrunner.version>1.1</plugin.testrunner.version>
     </properties>
-    
     <scm>
-    	<connection>scm:git:ssh://git@socgit.verigy.net:7999/~alexander.vonrenteln/stash-http-get-post-receive-hook.git</connection>
-    	<url>http://socgit.verigy.net/stash/users/alexander.vonrenteln/repos/stash-http-get-post-receive-hook/browse</url>
+        <connection>scm:git:ssh://git@socgit.verigy.net:7999/~alexander.vonrenteln/stash-http-get-post-receive-hook.git</connection>
+        <url>http://socgit.verigy.net/stash/users/alexander.vonrenteln/repos/stash-http-get-post-receive-hook/browse</url>
     </scm>
 </project>
