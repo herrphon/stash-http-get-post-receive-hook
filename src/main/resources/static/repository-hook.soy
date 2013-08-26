@@ -1,0 +1,29 @@
+{namespace de.aeffle.stash.plugin.hook}
+
+/**
+ * @param config
+ * @param? errors
+ */
+{template .view}
+    {call aui.form.textField}
+        {param id: 'url' /}
+        {param initialValue: $config['url'] /}
+        {param labelContent: 'url'  /}
+        {param descriptionText: 'Url for the HTTP GET request' /}
+        {param errorTexts: $errors ? $errors['url'] : null /}
+    {/call}
+    {call aui.form.textField}
+        {param id: 'user' /}
+        {param initialValue: $config['user'] /}
+        {param labelContent: 'user'  /}
+        {param descriptionText: 'User for the authentication.' /}
+        {param errorTexts: $errors ? $errors['user'] : null /}
+    {/call}
+    {call aui.form.textField}
+        {param id: 'pass' /}
+        {param initialValue: $config['pass'] /}
+        {param labelContent: 'pass'  /}
+        {param descriptionText: 'Password for the authentication.' /}
+        {param errorTexts: $errors ? $errors['pass'] : null /}
+    {/call}    
+{/template}
