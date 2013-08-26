@@ -10,8 +10,8 @@
     <version>1.0-SNAPSHOT</version>
 
     <organization>
-        <name>Example Company</name>
-        <url>http://www.example.com/</url>
+        <name>Aeffle</name>
+        <url>http://www.aeffle.de/</url>
     </organization>
 
     <name>stash-http-get-post-receive-hook</name>
@@ -118,4 +118,8 @@
         <plugin.testrunner.version>1.1</plugin.testrunner.version>
     </properties>
     
+    <scm>
+    	<connection>scm:git:ssh://git@socgit.verigy.net:7999/~alexander.vonrenteln/stash-http-get-post-receive-hook.git</connection>
+    	<url>http://socgit.verigy.net/stash/users/alexander.vonrenteln/repos/stash-http-get-post-receive-hook/browse</url>
+    </scm>
 </project>
