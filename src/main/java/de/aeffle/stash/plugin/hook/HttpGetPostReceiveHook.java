@@ -3,8 +3,11 @@ package de.aeffle.stash.plugin.hook;
 import com.atlassian.stash.hook.repository.*;
 import com.atlassian.stash.repository.*;
 import com.atlassian.stash.setting.*;
+
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.Collection;
+import org.apache.commons.codec.binary.Base64;
 
 public class HttpGetPostReceiveHook implements AsyncPostReceiveRepositoryHook, RepositorySettingsValidator {
 	/**
@@ -12,10 +15,22 @@ public class HttpGetPostReceiveHook implements AsyncPostReceiveRepositoryHook, R
 	 */
 	@Override
 	public void postReceive(RepositoryHookContext context, Collection<RefChange> refChanges) {
-		String url = context.getSettings().getString("url");
+		String url  = context.getSettings().getString("url");
+		String user = context.getSettings().getString("user");
+		String pass = context.getSettings().getString("pass");
+		
 		if (url != null) {
 			try {
-				new URL(url).openConnection().getInputStream().close();
+				URL the_url = new URL(url);
+				URLConnection connection = (URLConnection) the_url.openConnection();
+
+				// build the auth string
+				String authString = user + ":" + pass;
+				String authStringEnc = new String(Base64.encodeBase64(authString.getBytes()));
+				connection.setRequestProperty("Authorization", "Basic " + authStringEnc);
+				
+				// get the stream  and close it again
+				connection.getInputStream().close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
