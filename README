@@ -16,6 +16,10 @@ https://developer.atlassian.com/display/DOCS/Introduction+to+the+Atlassian+Plugi
 /**
  * Soy template stuff:
  *
+ * see here: https://answers.atlassian.com/questions/153952/are-there-repository-hook-examples-for-more-complex-configuration-ui
+ *
+ * but from my experience nothing really works well :-/
+ *
  * CHECKBOX:
  * {call widget.aui.form.checkbox}
  *    {param id: 'xxx' /}

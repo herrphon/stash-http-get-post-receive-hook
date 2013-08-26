@@ -8,22 +8,21 @@
     {call aui.form.textField}
         {param id: 'url' /}
         {param initialValue: $config['url'] /}
-        {param labelContent: 'url'  /}
-        {param descriptionText: 'Url for the HTTP GET request' /}
+        {param labelContent: 'URL'  /}
+        {param descriptionText: 'Address for the HTTP GET request.' /}
         {param errorTexts: $errors ? $errors['url'] : null /}
-        {param extraClasses: 'long-field' /}
     {/call}
     {call aui.form.textField}
         {param id: 'user' /}
         {param initialValue: $config['user'] /}
-        {param labelContent: 'user'  /}
+        {param labelContent: 'Username'  /}
         {param descriptionText: 'User for the authentication.' /}
         {param errorTexts: $errors ? $errors['user'] : null /}
     {/call}
     {call aui.form.passwordField}
         {param id: 'pass' /}
         {param initialValue: $config['pass'] /}
-        {param labelContent: 'pass'  /}
+        {param labelContent: 'Password'  /}
         {param descriptionText: 'Password for the authentication.' /}
         {param errorTexts: $errors ? $errors['pass'] : null /}
     {/call}    
