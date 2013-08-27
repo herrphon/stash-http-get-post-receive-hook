@@ -117,4 +117,19 @@
         <connection>scm:git:ssh://git@socgit.verigy.net:7999/~alexander.vonrenteln/stash-http-get-post-receive-hook.git</connection>
         <url>http://socgit.verigy.net/stash/users/alexander.vonrenteln/repos/stash-http-get-post-receive-hook/browse</url>
     </scm>
+    <distributionManagement>
+        <!-- use the following if you're not using a snapshot version. -->
+        <repository>
+            <id>repo</id>
+            <name>Repository on socbl504</name>
+            <url>scp://socbl504/home/avonrent/jira-repo/release</url>
+        </repository>
+        <!-- use the following if you ARE using a snapshot version. -->
+        <snapshotRepository>
+            <id>repo</id>
+            <name>Repository on socbl504</name>
+            <url>scp://socbl504/home/avonrent/jira-repo/snapshot</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 </project>
