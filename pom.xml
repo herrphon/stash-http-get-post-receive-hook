@@ -122,13 +122,13 @@
         <repository>
             <id>repo</id>
             <name>Repository on socbl504</name>
-            <url>scp://socbl504/home/avonrent/jira-repo/release</url>
+            <url>file://C:/atlassian-plugins/tmp/</url>
         </repository>
         <!-- use the following if you ARE using a snapshot version. -->
         <snapshotRepository>
             <id>repo</id>
             <name>Repository on socbl504</name>
-            <url>scp://socbl504/home/avonrent/jira-repo/snapshot</url>
+            <url>file://C:/atlassian-plugins/tmp/</url>
         </snapshotRepository>
     </distributionManagement>
 
