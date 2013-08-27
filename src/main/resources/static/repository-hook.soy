@@ -34,6 +34,8 @@
         {param errorTexts: $errors ? $errors['pass'] : null /}
     {/call}
     <script>
-       jQuery("input#url").css('max-width', '500px');
+    {literal}
+       AJS.$("input#url").css('max-width', '500px');
+    {/literal}
      </script>
 {/template}
