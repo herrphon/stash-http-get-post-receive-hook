@@ -15,19 +15,22 @@ public class HttpGetPostReceiveHook implements AsyncPostReceiveRepositoryHook, R
 	 */
 	@Override
 	public void postReceive(RepositoryHookContext context, Collection<RefChange> refChanges) {
-		String url  = context.getSettings().getString("url");
-		String user = context.getSettings().getString("user");
-		String pass = context.getSettings().getString("pass");
+		String  url      = context.getSettings().getString("url");
+		String  user     = context.getSettings().getString("user");
+		String  pass     = context.getSettings().getString("pass");
+		Boolean use_auth = context.getSettings().getBoolean("use_auth");
 		
 		if (url != null) {
 			try {
 				URL the_url = new URL(url);
 				URLConnection connection = (URLConnection) the_url.openConnection();
 
-				// build the auth string
-				String authString = user + ":" + pass;
-				String authStringEnc = new String(Base64.encodeBase64(authString.getBytes()));
-				connection.setRequestProperty("Authorization", "Basic " + authStringEnc);
+				if ( use_auth == true ) {
+                    // build the auth string
+                    String authString = user + ":" + pass;
+                    String authStringEnc = new String(Base64.encodeBase64(authString.getBytes()));
+                    connection.setRequestProperty("Authorization", "Basic " + authStringEnc);
+				}
 				
 				// get the stream  and close it again
 				connection.getInputStream().close();

@@ -24,7 +24,7 @@
     <description key="http-get-post-receive-hook.description">The Http Get Post Receive Hook Plugin</description>
     <icon>icon-example.png</icon>
     <config-form name="Http Get Post Receive Hook Config" key="http-get-post-receive-hook-config">
-      <view>de.aeffle.stash.plugin.hook.view</view>
+      <view>de.aeffle.stash.plugin.hook.configuration</view>
       <directory location="/static/"/>
     </config-form>
   </repository-hook>

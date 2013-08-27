@@ -4,30 +4,36 @@
  * @param config
  * @param? errors
  */
-{template .view}
-    <script>
-       jQuery("input#url").attr('class', 'text long-field');
-    </script>
+{template .configuration}
     {call aui.form.textField}
         {param id: 'url' /}
-        {param initialValue: $config['url'] /}
+        {param value: $config['url'] /}
         {param labelContent: 'URL'  /}
         {param descriptionText: 'Address for the HTTP GET request.' /}
-        {param extraClasses: 'long' /}
         {param errorTexts: $errors ? $errors['url'] : null /}
+    {/call}
+    {call widget.aui.form.checkbox}
+        {param id: 'use_auth' /}
+        {param checked: $config and $config.use_auth /}
+        {param labelHtml: 'Use Authentication' /}
+        {param description: 'Check if the URL needs authentication.' /}
+        {param errorTexts: $errors ? $errors['use_auth'] : null /}
     {/call}
     {call aui.form.textField}
         {param id: 'user' /}
-        {param initialValue: $config['user'] /}
-        {param labelContent: 'Username'  /}
+        {param value: $config['user'] /}
+        {param labelContent: 'user'  /}
         {param descriptionText: 'User for the authentication.' /}
         {param errorTexts: $errors ? $errors['user'] : null /}
     {/call}
     {call aui.form.passwordField}
         {param id: 'pass' /}
-        {param initialValue: $config['pass'] /}
+        {param value: $config['pass'] /}
         {param labelContent: 'Password'  /}
         {param descriptionText: 'Password for the authentication.' /}
         {param errorTexts: $errors ? $errors['pass'] : null /}
-    {/call}    
+    {/call}
+    <script>
+       jQuery("input#url").css('max-width', '500px');
+     </script>
 {/template}
