@@ -6,11 +6,10 @@
     <artifactId>stash-http-get-post-receive-hook</artifactId>
     <version>1.3-SNAPSHOT</version>
     <organization>
-        <name>Aeffle</name>
+        <name>Alex @ Aeffle</name>
         <url>http://www.aeffle.de/</url>
     </organization>
     <name>stash-http-get-post-receive-hook</name>
-    <description>This is the de.aeffle.stash.plugin:stash-http-get-post-receive-hook plugin for Atlassian Stash.</description>
     <packaging>atlassian-plugin</packaging>
     <dependencyManagement>
         <dependencies>
@@ -132,4 +131,5 @@
         </snapshotRepository>
     </distributionManagement>
 
+    <description>This plugin provides the possiblity to do a HTTP GET triggered by a post-receive.</description>
 </project>

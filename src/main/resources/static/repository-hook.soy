@@ -10,6 +10,7 @@
         {param value: $config['url'] /}
         {param labelContent: 'URL'  /}
         {param descriptionText: 'Address for the HTTP GET request.' /}
+        {param extraClass: 'long-field' /}
         {param errorTexts: $errors ? $errors['url'] : null /}
     {/call}
     {call widget.aui.form.checkbox}
@@ -24,6 +25,7 @@
         {param value: $config['user'] /}
         {param labelContent: 'user'  /}
         {param descriptionText: 'User for the authentication.' /}
+        {param idDisabled: true /} 
         {param errorTexts: $errors ? $errors['user'] : null /}
     {/call}
     {call aui.form.passwordField}
@@ -31,11 +33,27 @@
         {param value: $config['pass'] /}
         {param labelContent: 'Password'  /}
         {param descriptionText: 'Password for the authentication.' /}
+        {param disabled: true /}
         {param errorTexts: $errors ? $errors['pass'] : null /}
     {/call}
+    
+    
     <script>
-    {literal}
-       AJS.$("input#url").css('max-width', '500px');
-    {/literal}
-     </script>
+      {literal}
+        AJS.$("input#url").css('max-width', '500px');
+
+        AJS.$('input#use_auth').on('change', function() {
+            if ( AJS.$('input#use_auth').prop('checked') ) {
+                AJS.$("input#user").attr('disabled', null).attr('class','text')
+                AJS.$("input#pass").attr('disabled', null).attr('class','text')
+            } else {
+                AJS.$("input#user").attr('disabled', 'true').attr('class','text disabled')
+                AJS.$("input#pass").attr('disabled', 'true').attr('class','text disabled')
+            }
+        });
+        
+        AJS.$('input#use_auth').trigger('change');  
+      {/literal}
+    </script>
+    
 {/template}
