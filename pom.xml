@@ -9,7 +9,7 @@
         <name>alex @ aeffle</name>
         <url>http://www.aeffle.de/</url>
     </organization>
-    <name>HTTP GET Stash Post Receive Hook</name>
+    <name>HTTP GET Post-Receive Hook for Stash </name>
     <packaging>atlassian-plugin</packaging>
     <dependencyManagement>
         <dependencies>
