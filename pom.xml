@@ -6,10 +6,10 @@
     <artifactId>stash-http-get-post-receive-hook</artifactId>
     <version>1.4-SNAPSHOT</version>
     <organization>
-        <name>Alex @ Aeffle</name>
+        <name>alex @ aeffle</name>
         <url>http://www.aeffle.de/</url>
     </organization>
-    <name>stash-http-get-post-receive-hook</name>
+    <name>HTTP GET Stash Post Receive Hook</name>
     <packaging>atlassian-plugin</packaging>
     <dependencyManagement>
         <dependencies>
