@@ -37,7 +37,7 @@ public class UrlTemplateTranslator {
 		}
 	}
 	
-	private void addTranslation(String key, String value) {
+	public void addTranslation(String key, String value) {
 		translationMap.put(key, value);
 	}
 
@@ -46,15 +46,4 @@ public class UrlTemplateTranslator {
 		return substitutor.replace(template);
 	}
 
-	public void test() {
-		translationMap.clear();
-		translationMap.put("animal", "quick brown fox");
-		translationMap.put("target", "lazy dog");
-		String template = "The ${animal} jumped over the ${target}.";
-		String expected = "The quick brown fox jumped over the lazy dog.";
-
-		if (getUrlFromTemplate(template) != expected) {
-			throw new RuntimeException("Translation does not work correctly");
-		}
-	}
 }
