@@ -11,20 +11,27 @@ import org.apache.commons.codec.binary.Base64;
 
 import com.atlassian.extras.common.log.Logger;
 
-public class HttpHandler {
+public class HttpAgent {
 	private static final Logger.Log log = Logger
 			.getInstance(HttpGetPostReceiveHook.class);
-	private final HttpURLConnection connection;
+	private HttpURLConnection connection;
+	private String urlString;
+	private String user;
+	private String pass;
+	private Boolean use_auth;
 
-	public HttpHandler(String urlString) throws IOException,
-			MalformedURLException {
-		URL url = new URL(urlString);
-		connection = (HttpURLConnection) url.openConnection();
-		connection.setReadTimeout(5000);
-		connection.setInstanceFollowRedirects(true);
-		HttpURLConnection.setFollowRedirects(true);
+	public HttpAgent(HttpLocation httpLocation) {
+		
+		urlString = httpLocation.getUrlString();
+	    user = httpLocation.getUser();
+	    pass = httpLocation.getPass();
+	    use_auth = httpLocation.getUseAuth();
+	    
+		log.info("The following URL was found: " + urlString);
+
 	}
 
+	
 	public void authenticate(String user, String pass) {
 		log.info("Authentication was enabled with user: " + user);
 		// build the auth string
@@ -35,10 +42,30 @@ public class HttpHandler {
 				.setRequestProperty("Authorization", "Basic " + authStringEnc);
 	}
 
-	public void doPageRequest() throws IOException {
-		connection.connect();
-		checkResponse();
-		log.debug("HTTP response:\n" + getPageContent());
+	
+	public void doPageRequest() {
+		try {
+			URL url = new URL(urlString);
+			connection = (HttpURLConnection) url.openConnection();
+			connection.setReadTimeout(5000);
+			connection.setInstanceFollowRedirects(true);
+			HttpURLConnection.setFollowRedirects(true);
+			
+			if (use_auth == true) {
+				authenticate(user, pass);
+			}
+			
+			connection.connect();
+			checkResponse();
+			log.debug("HTTP response:\n" + getPageContent());
+			
+		} catch (MalformedURLException e) {
+			log.error("Malformed URL:" + e);
+		} catch (IOException e) {
+			log.error("Some IO exception occured", e);
+		} catch (Exception e) {
+			log.error("Something else went wrong: ", e);
+		}
 	}
 
 	private String getPageContent() throws IOException {

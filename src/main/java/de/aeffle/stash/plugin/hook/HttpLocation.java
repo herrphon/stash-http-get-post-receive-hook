@@ -1,15 +1,27 @@
 package de.aeffle.stash.plugin.hook;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import com.atlassian.stash.hook.repository.RepositoryHookContext;
 
-public class StashConfig {
+public class HttpLocation {
 	private final RepositoryHookContext context;
 
-	public StashConfig(RepositoryHookContext context) {
+	public static Collection<HttpLocation> getAllFromContext(RepositoryHookContext context) {
+		Collection<HttpLocation> httpGetLocations = new ArrayList<HttpLocation>();
+		
+		HttpLocation first = new HttpLocation(context); 
+		
+		httpGetLocations.add(first);
+		return httpGetLocations;
+	}
+	
+	public HttpLocation(RepositoryHookContext context) {
 		this.context = context;
 	}
 
-	public String getUrl() {
+	public String getUrlString() {
 		return getConfigString("url");
 	}
 

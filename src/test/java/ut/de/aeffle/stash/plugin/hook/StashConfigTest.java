@@ -9,17 +9,17 @@ import org.junit.Test;
 import com.atlassian.stash.hook.repository.RepositoryHookContext;
 import com.atlassian.stash.setting.Settings;
 
-import de.aeffle.stash.plugin.hook.StashConfig;
+import de.aeffle.stash.plugin.hook.HttpLocation;
 
 public class StashConfigTest { 
 	
-	private StashConfig stashConfig;
+	private HttpLocation stashConfig;
 	private Settings settings;
 
 	@Before
 	public void setUp() throws Exception {
 		RepositoryHookContext contextMock = mock(RepositoryHookContext.class);
-		stashConfig = new StashConfig(contextMock);
+		stashConfig = new HttpLocation(contextMock);
 
 		settings = mock(Settings.class);
 		
@@ -29,7 +29,7 @@ public class StashConfigTest {
 	@Test
 	public void testGetUrl() {
 		when(settings.getString("url")).thenReturn("http://aeffle.de");
-		assertEquals("http://aeffle.de", stashConfig.getUrl());
+		assertEquals("http://aeffle.de", stashConfig.getUrlString());
 	}
 
 	@Test
