@@ -15,19 +15,19 @@ public class HttpAgent {
 	private static final Logger.Log log = Logger
 			.getInstance(HttpGetPostReceiveHook.class);
 	private HttpURLConnection connection;
-	private String urlString;
+	private String url;
 	private String user;
 	private String pass;
 	private Boolean use_auth;
 
 	public HttpAgent(HttpLocation httpLocation) {
 		
-		urlString = httpLocation.getUrlString();
+		url = httpLocation.getUrl();
 	    user = httpLocation.getUser();
 	    pass = httpLocation.getPass();
 	    use_auth = httpLocation.getUseAuth();
 	    
-		log.info("The following URL was found: " + urlString);
+		log.info("The following URL was found: " + url);
 
 	}
 
@@ -45,7 +45,7 @@ public class HttpAgent {
 	
 	public void doPageRequest() {
 		try {
-			URL url = new URL(urlString);
+			URL url = new URL(this.url);
 			connection = (HttpURLConnection) url.openConnection();
 			connection.setReadTimeout(5000);
 			connection.setInstanceFollowRedirects(true);

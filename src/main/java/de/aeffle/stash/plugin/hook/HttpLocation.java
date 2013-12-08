@@ -7,6 +7,10 @@ import com.atlassian.stash.hook.repository.RepositoryHookContext;
 
 public class HttpLocation {
 	private final RepositoryHookContext context;
+	private final String urlTemplate;
+	private String url;
+	private final String user;
+	private final String pass;
 
 	public static Collection<HttpLocation> getAllFromContext(RepositoryHookContext context) {
 		Collection<HttpLocation> httpGetLocations = new ArrayList<HttpLocation>();
@@ -17,25 +21,39 @@ public class HttpLocation {
 		return httpGetLocations;
 	}
 	
-	public HttpLocation(RepositoryHookContext context) {
+	private HttpLocation(RepositoryHookContext context) {
 		this.context = context;
-	}
-
-	public String getUrlString() {
-		return getConfigString("url");
-	}
-
-	public String getUser() {
-		return getConfigString("user");
-	}
-
-	public String getPass() {
-		return getConfigString("pass");
+		
+		urlTemplate = getConfigString("url");
+		url = urlTemplate;
+		user = getConfigString("user");
+		pass = getConfigString("pass");
 	}
 
 	private String getConfigString(String name) {
 		return context.getSettings().getString(name);
 	}
+
+	public String getUrlTemplateString() {
+		return urlTemplate;
+	}
+	
+	public String getUrl() {
+		return url;
+	}
+	
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public String getPass() {
+		return pass;
+	}
+
 
 	public Boolean getUseAuth() {
 		Boolean useAuth = context.getSettings().getBoolean("use_auth");

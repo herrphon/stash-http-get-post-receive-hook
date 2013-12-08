@@ -21,7 +21,6 @@ public class HttpGetPostReceiveHook implements AsyncPostReceiveRepositoryHook,
 
 	public HttpGetPostReceiveHook(StashAuthenticationContext authenticationContext) {
 		this.authenticationContext = authenticationContext;
-		log.error("User: " + this.authenticationContext.getCurrentUser().getName());
 	}
 	
 	
@@ -32,11 +31,15 @@ public class HttpGetPostReceiveHook implements AsyncPostReceiveRepositoryHook,
 	public void postReceive(RepositoryHookContext context,
 			Collection<RefChange> refChanges) {
 		log.debug("Http Get Post Receive Hook started.");
-
+		log.debug("User: " + this.authenticationContext.getCurrentUser().getName());
+		
 		Collection<HttpLocation> httpLocations = HttpLocation.getAllFromContext(context);
 		
 		for(HttpLocation httpLocation: httpLocations){
-
+			UrlTemplateTranslator urlTemplateTranslator = new UrlTemplateTranslator();
+			urlTemplateTranslator.addStashAuthenticationContext(authenticationContext);
+			urlTemplateTranslator.transform(httpLocation);
+			
 			HttpAgent httpAgent = new HttpAgent(httpLocation);
 			httpAgent.doPageRequest();
 		}

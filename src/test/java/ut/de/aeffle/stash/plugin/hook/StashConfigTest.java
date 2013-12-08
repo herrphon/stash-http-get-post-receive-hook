@@ -19,7 +19,7 @@ public class StashConfigTest {
 	@Before
 	public void setUp() throws Exception {
 		RepositoryHookContext contextMock = mock(RepositoryHookContext.class);
-		stashConfig = new HttpLocation(contextMock);
+		stashConfig = HttpLocation.getAllFromContext(contextMock);
 
 		settings = mock(Settings.class);
 		

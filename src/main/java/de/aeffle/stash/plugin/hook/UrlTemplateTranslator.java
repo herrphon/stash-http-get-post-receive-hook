@@ -10,6 +10,8 @@ import org.apache.commons.lang.text.StrSubstitutor;
 import com.atlassian.stash.hook.repository.RepositoryHookContext;
 import com.atlassian.stash.repository.RefChange;
 import com.atlassian.stash.repository.Repository;
+import com.atlassian.stash.user.StashAuthenticationContext;
+import com.atlassian.stash.user.StashUser;
 
 public class UrlTemplateTranslator {
 	private Map<String, String> translationMap;
@@ -27,6 +29,13 @@ public class UrlTemplateTranslator {
 		addTranslation("slug", repository.getSlug());
 	}
 
+	public void addStashAuthenticationContext(StashAuthenticationContext authenticationContext) {
+		StashUser user = authenticationContext.getCurrentUser();
+		addTranslation("userName", user.getName());
+		addTranslation("userDisplayName", user.getDisplayName());
+		addTranslation("userEmail", user.getEmailAddress());
+	}
+	
 	public void addStashRefChanges(Collection<RefChange> refChanges) {
 		Iterator<RefChange> iterator = refChanges.iterator();
 		while (iterator.hasNext()) {
@@ -41,9 +50,11 @@ public class UrlTemplateTranslator {
 		translationMap.put(key, value);
 	}
 
-	public String getUrlFromTemplate(String template) {
+	public void transform(HttpLocation httpLocation) {
 		StrSubstitutor substitutor = new StrSubstitutor(translationMap);
-		return substitutor.replace(template);
+		String urlTemplate = httpLocation.getUrlTemplateString();
+		String url = substitutor.replace(urlTemplate);
+		httpLocation.setUrl(url);
 	}
 
 }
