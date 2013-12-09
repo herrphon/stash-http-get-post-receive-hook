@@ -27,7 +27,7 @@ public class UrlTemplateTranslatorTest {
 		RepositoryHookContext contextMock = mock(RepositoryHookContext.class);
 		Settings settings = mock(Settings.class);
 		when(contextMock.getSettings()).thenReturn(settings);
-		when(settings.getString("url")).thenReturn("http://doe.com/${userName}");
+		when(settings.getString("url")).thenReturn("http://doe.com/${user.name}");
 		
 		Collection<HttpLocation> httpLocations = HttpLocation.getAllFromContext(contextMock);
 		
@@ -44,7 +44,7 @@ public class UrlTemplateTranslatorTest {
 	}
 
 	@Test
-	public void translationTest() {
+	public void testTransform() {
 		UrlTemplateTranslator translator = new UrlTemplateTranslator();
 		translator.addStashAuthenticationContext(authenticationContext);
 		translator.transform(httpLocation);

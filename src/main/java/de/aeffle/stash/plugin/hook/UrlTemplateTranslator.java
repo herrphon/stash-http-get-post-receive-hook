@@ -22,18 +22,18 @@ public class UrlTemplateTranslator {
 
 	public void addStashRepositoryHookContext(RepositoryHookContext context) {
 		Repository repository = context.getRepository();
-		addTranslation("repositoryId", repository.getId().toString());
-		addTranslation("repository", repository.getName());
-		addTranslation("projectName", repository.getProject().getName());
-		addTranslation("projectKey", repository.getProject().getKey());
-		addTranslation("slug", repository.getSlug());
+		addTranslation("repository.id", repository.getId().toString());
+		addTranslation("repository.name", repository.getName());
+		addTranslation("repository.slug", repository.getSlug());
+		addTranslation("project.name", repository.getProject().getName());
+		addTranslation("project.key", repository.getProject().getKey());
 	}
 
 	public void addStashAuthenticationContext(StashAuthenticationContext authenticationContext) {
 		StashUser user = authenticationContext.getCurrentUser();
-		addTranslation("userName", user.getName());
-		addTranslation("userDisplayName", user.getDisplayName());
-		addTranslation("userEmail", user.getEmailAddress());
+		addTranslation("user.name", user.getName());
+		addTranslation("user.displayName", user.getDisplayName());
+		addTranslation("user.email", user.getEmailAddress());
 	}
 	
 	public void addStashRefChanges(Collection<RefChange> refChanges) {
@@ -46,7 +46,7 @@ public class UrlTemplateTranslator {
 		}
 	}
 	
-	public void addTranslation(String key, String value) {
+	private void addTranslation(String key, String value) {
 		translationMap.put(key, value);
 	}
 
