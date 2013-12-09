@@ -62,4 +62,8 @@ public class HttpLocation {
 		}
 		return useAuth;
 	}
+	
+	public String toString() {
+		return "user: " + user + " - pass: " + pass + " - url: " + url;
+	}
 }

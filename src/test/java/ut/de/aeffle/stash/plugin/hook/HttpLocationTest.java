@@ -3,6 +3,8 @@ package ut.de.aeffle.stash.plugin.hook;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import java.util.Collection;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,49 +13,52 @@ import com.atlassian.stash.setting.Settings;
 
 import de.aeffle.stash.plugin.hook.HttpLocation;
 
-public class StashConfigTest { 
+public class HttpLocationTest { 
 	
-	private HttpLocation stashConfig;
+	private HttpLocation httpLocation;
 	private Settings settings;
 
 	@Before
 	public void setUp() throws Exception {
 		RepositoryHookContext contextMock = mock(RepositoryHookContext.class);
-		stashConfig = HttpLocation.getAllFromContext(contextMock);
-
-		settings = mock(Settings.class);
-		
+		this.settings = mock(Settings.class);
 		when(contextMock.getSettings()).thenReturn(settings);
+		when(settings.getString("url")).thenReturn("http://aeffle.de");
+		when(settings.getString("user")).thenReturn("john.doe");
+		when(settings.getString("pass")).thenReturn("secret");
+		
+		Collection<HttpLocation> httpLocations = HttpLocation.getAllFromContext(contextMock);
+		
+		for (HttpLocation httpLocation: httpLocations) {
+			this.httpLocation = httpLocation;
+		}
 	}
 
 	@Test
 	public void testGetUrl() {
-		when(settings.getString("url")).thenReturn("http://aeffle.de");
-		assertEquals("http://aeffle.de", stashConfig.getUrlString());
+		assertEquals("http://aeffle.de", httpLocation.getUrl());
 	}
 
 	@Test
 	public void testGetUser() {
-		when(settings.getString("user")).thenReturn("john.doe");
-		assertEquals("john.doe", stashConfig.getUser());
+		assertEquals("john.doe", httpLocation.getUser());
 	}
 
 	@Test
 	public void testGetPass() {
-		when(settings.getString("pass")).thenReturn("secret");
-		assertEquals("secret", stashConfig.getPass());
+		assertEquals("secret", httpLocation.getPass());
 	}
 
 	@Test
 	public void testGetUseAuth() {
 		when(settings.getBoolean("use_auth")).thenReturn(null);
-		assertEquals(Boolean.FALSE, stashConfig.getUseAuth());
+		assertEquals(Boolean.FALSE, httpLocation.getUseAuth());
 		
 		when(settings.getBoolean("use_auth")).thenReturn(Boolean.FALSE);
-		assertEquals(Boolean.FALSE, stashConfig.getUseAuth());
+		assertEquals(Boolean.FALSE, httpLocation.getUseAuth());
 
 		when(settings.getBoolean("use_auth")).thenReturn(Boolean.TRUE);
-		assertEquals(Boolean.TRUE, stashConfig.getUseAuth());
+		assertEquals(Boolean.TRUE, httpLocation.getUseAuth());
 	}
 
 }
