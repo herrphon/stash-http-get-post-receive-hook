@@ -1,49 +1,20 @@
 {namespace de.aeffle.stash.plugin.hook}
 
+
+
 /**
  * @param config
  * @param? errors
  */
 {template .configuration}
-    {call aui.form.textField}
-        {param id: 'url' /}
-        {param value: $config['url'] /}
-        {param labelContent: 'URL'  /}
-        {param descriptionText: 'Address for the HTTP GET request.' /}
-        {param extraClass: 'long-field' /}
-        {param errorTexts: $errors ? $errors['url'] : null /}
-    {/call}
-    {call widget.aui.form.checkbox}
-        {param id: 'use_auth' /}
-        {param checked: $config and $config.use_auth /}
-        {param labelHtml: 'Use Authentication' /}
-        {param description: 'Check if the URL needs authentication.' /}
-        {param errorTexts: $errors ? $errors['use_auth'] : null /}
-    {/call}
-    {call aui.form.textField}
-        {param id: 'user' /}
-        {param value: $config['user'] /}
-        {param labelContent: 'Username'  /}
-        {param descriptionText: 'User for the authentication.' /}
-        {param idDisabled: true /} 
-        {param errorTexts: $errors ? $errors['user'] : null /}
-    {/call}
-    {call aui.form.passwordField}
-        {param id: 'pass' /}
-        {param value: $config['pass'] /}
-        {param labelContent: 'Password'  /}
-        {param descriptionText: 'Password for the authentication.' /}
-        {param disabled: true /}
-        {param errorTexts: $errors ? $errors['pass'] : null /}
-    {/call}
 
-    {call aui.form.textField}
-        {param id: 'test' /}
-        {param value: $config['test'] /}
-        {param labelContent: 'Test'  /}
-        {param descriptionText: 'Test.' /}
-        {param extraClass: 'long-field' /}
-        {param errorTexts: $errors ? $errors['test'] : null /}
+    {call .locationSettings}
+        {param id: '0' /}
+        {param url: $config['url'] /}
+        {param useAuth: $config['useAuth'] /}
+        {param user: $config['user'] /}
+        {param pass: $config['pass'] /}
+        {param errors: $errors /}
     {/call}
     
     {literal}

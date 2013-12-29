@@ -1,0 +1,49 @@
+{namespace de.aeffle.stash.plugin.hook}
+
+
+
+/**
+ * Location Settings
+ * @param id Id
+ * @param url Url
+ * @param useAuth UseAuth
+ * @param user Username
+ * @param pass Password
+ * @param? errors Errors
+ */    
+{template .locationSettings}
+    <input type="hidden" name="id" value="{$id}" />
+
+    {call aui.form.textField}
+        {param id: 'url' /}
+        {param value: $url /}
+        {param labelContent: 'URL'  /}
+        {param descriptionText: 'Address for the HTTP GET request.' /}
+        {param extraClass: 'long-field' /}
+        {param errorTexts: $errors ? $errors['url'] : null /}
+    {/call}
+    {call widget.aui.form.checkbox}
+        {param id: 'use_auth' /}
+        {param checked: $useAuth /}
+        {param labelHtml: 'Use Authentication' /}
+        {param description: 'Check if the URL needs authentication.' /}
+        {param errorTexts: $errors ? $errors['use_auth'] : null /}
+    {/call}
+    {call aui.form.textField}
+        {param id: 'user' /}
+        {param value: $user /}
+        {param labelContent: 'Username'  /}
+        {param descriptionText: 'User for the authentication.' /}
+        {param idDisabled: true /} 
+        {param errorTexts: $errors ? $errors['user'] : null /}
+    {/call}
+    {call aui.form.passwordField}
+        {param id: 'pass' /}
+        {param value: $pass /}
+        {param labelContent: 'Password'  /}
+        {param descriptionText: 'Password for the authentication.' /}
+        {param disabled: true /}
+        {param errorTexts: $errors ? $errors['pass'] : null /}
+    {/call}
+{/template}
+

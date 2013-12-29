@@ -1,18 +1,20 @@
 package de.aeffle.stash.plugin.hook;
 
-import com.atlassian.extras.common.log.Logger;
-import com.atlassian.sal.api.component.ComponentLocator;
-import com.atlassian.stash.hook.repository.*;
-import com.atlassian.stash.repository.*;
-import com.atlassian.stash.setting.*;
-import com.atlassian.stash.user.StashAuthenticationContext;
-
-import java.awt.Component;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import com.atlassian.extras.common.log.Logger;
+import com.atlassian.stash.hook.repository.AsyncPostReceiveRepositoryHook;
+import com.atlassian.stash.hook.repository.RepositoryHookContext;
+import com.atlassian.stash.repository.RefChange;
+import com.atlassian.stash.repository.Repository;
+import com.atlassian.stash.setting.RepositorySettingsValidator;
+import com.atlassian.stash.setting.Settings;
+import com.atlassian.stash.setting.SettingsValidationErrors;
+import com.atlassian.stash.user.StashAuthenticationContext;
 
 public class HttpGetPostReceiveHook implements AsyncPostReceiveRepositoryHook,
 		RepositorySettingsValidator {

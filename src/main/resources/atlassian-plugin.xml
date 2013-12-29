@@ -8,8 +8,10 @@
     <param name="plugin-icon">images/pluginIcon.png</param>
     <param name="plugin-logo">images/pluginLogo.png</param>
   </plugin-info>
+  
   <!-- add our i18n resource -->
   <resource type="i18n" name="i18n" location="stash-http-get-post-receive-hook"/>
+  
   <!-- add our web resources -->
   <web-resource key="stash-http-get-post-receive-hook-resources" name="stash-http-get-post-receive-hook Web Resources">
     <dependency>com.atlassian.auiplugin:ajs</dependency>
@@ -18,6 +20,28 @@
     <resource type="download" name="images/" location="/images"/>
     <context>stash-http-get-post-receive-hook</context>
   </web-resource>
+  
+  <!--  some soy stuff :-) -->
+  <!-- 
+  <web-resource key="stash-http-get-post-receive-hook-resources-2">
+
+        <transformation extension="soy">
+            <transformer key="soyTransformer" />
+        </transformation>
+
+        <transformation extension="less">
+            <transformer key="less-transformer" />
+        </transformation>
+
+        <resource type="download" name="pull-request-overview.soy.js" location="/pull-request-overview.soy" />
+        <resource type="download" name="pull-request-overview.js" location="/pull-request-overview.js" />
+        <resource type="download" name="pull-request-overview.css" location="/pull-request-overview.less" />
+
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+        
+  </web-resource>
+     -->
+    
   <!-- import from the product container -->
   <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties"/>
   <repository-hook name="Http Get Post Receive Hook" i18n-name-key="http-get-post-receive-hook.name" key="http-get-post-receive-hook" class="de.aeffle.stash.plugin.hook.HttpGetPostReceiveHook">
