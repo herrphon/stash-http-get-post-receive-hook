@@ -1,11 +1,13 @@
 package de.aeffle.stash.plugin.hook;
 
 import com.atlassian.extras.common.log.Logger;
+import com.atlassian.sal.api.component.ComponentLocator;
 import com.atlassian.stash.hook.repository.*;
 import com.atlassian.stash.repository.*;
 import com.atlassian.stash.setting.*;
 import com.atlassian.stash.user.StashAuthenticationContext;
 
+import java.awt.Component;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -69,6 +71,9 @@ public class HttpGetPostReceiveHook implements AsyncPostReceiveRepositoryHook,
 				errors.addFieldError("url", "Url was malformed.");
 			}
 		}
+		
+		
+		errors.addFieldError("test", settings.getString("test") + " - " + settings.getString("test2"));
 
 	}
 }

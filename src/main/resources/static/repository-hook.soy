@@ -36,10 +36,18 @@
         {param disabled: true /}
         {param errorTexts: $errors ? $errors['pass'] : null /}
     {/call}
+
+    {call aui.form.textField}
+        {param id: 'test' /}
+        {param value: $config['test'] /}
+        {param labelContent: 'Test'  /}
+        {param descriptionText: 'Test.' /}
+        {param extraClass: 'long-field' /}
+        {param errorTexts: $errors ? $errors['test'] : null /}
+    {/call}
     
-    
-    <script>
-      {literal}
+    {literal}
+      <script>
         AJS.$("input#url").css('max-width', '500px');
 
         AJS.$('input#use_auth').on('change', function() {
@@ -53,7 +61,18 @@
         });
         
         AJS.$('input#use_auth').trigger('change');  
-      {/literal}
-    </script>
+        
+        // GET http://espc80:7990/stash
+        //       /rest/api/1.0/projects/PROJECT_1/repos/rep_1
+        //       /settings/hooks
+        //       /de.aeffle.stash.plugin.stash-http-get-post-receive-hook:http-get-post-receive-hook
+        //       /settings
+        // 
+        // returns:       
+        //       {"url":"http://aeffle.de/","use_auth":true,"user":"test","pass":"test"}
+        
+      </script>
+    {/literal}
+
     
 {/template}
