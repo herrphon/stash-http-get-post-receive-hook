@@ -10,11 +10,36 @@
  * @param? errors Errors
  */
 {template .test}
-    <div>Id {$id}</div>
-    <div>Url {$url}</div>
-    <div>UseAuth {$useAuth}:</div>
-    <div>User {$user}:</div>
-    <div>Pass {$pass}:</div>
-    <div>Errors {$errors}:</div>    
+    <table>
+    <tr><td> Id:      </td><td>  <input type="text" name="id" value="{$id}"   />    </td></tr>
+    <tr><td> Url:     </td><td>  <input type="text" name="url" value="{$url}" />    </td></tr>
+    
+    <tr>
+      <td> UseAuth: </td>
+      <td> <input type="checkbox" name="useAuth" {if $useAuth} checked="checked" {/if} />   </td>
+    </tr>
+    
+    <tr><td> User:    </td><td>  <input type="text" name="user" value="{$user}"       />   </td></tr>
+    <tr><td> Pass:    </td><td>  <input type="text" name="pass" value="{$pass}"       />   </td></tr>
+
+    {if $errors}
+      <tr>
+        <td>Errors: </td>
+        <td>
+          <ul>
+          
+          {foreach $name in ['id', 'url', 'useAuth', 'name', 'pass']}
+            {if $errors[$name]}
+              <li> {$name}: {$errors[$name]} </li>
+            {/if}
+          {/foreach}
+          
+          </ul>
+        </td>
+      </tr>
+    {/if}
+    
+    </table>
+    
 {/template}
 

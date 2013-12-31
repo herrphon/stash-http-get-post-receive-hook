@@ -73,9 +73,6 @@ public class HttpGetPostReceiveHook implements AsyncPostReceiveRepositoryHook,
 				errors.addFieldError("url", "Url was malformed.");
 			}
 		}
-		
-		
-		errors.addFieldError("test", settings.getString("test") + " - " + settings.getString("test2"));
 
 	}
 }

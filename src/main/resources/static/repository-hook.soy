@@ -7,43 +7,22 @@
  * @param? errors
  */
 {template .configuration}
+  {let $rowNumbers: 3 /}
+  <input type="hidden" name="rowNumbers" id="rowNumbers" value="{$rowNumbers}" />
+  
+  {for $id in range(1, $rowNumbers + 1)}
+    {let $firstRow: $id == 1 /}
 
+    {if not $firstRow}
+      <hr>
+    {/if}
+    
     {call .locationSettings}
-        {param id: '0' /}
-        {param url: $config['url'] /}
-        {param useAuth: $config['useAuth'] /}
-        {param user: $config['user'] /}
-        {param pass: $config['pass'] /}
+        {param id: $id /}
+        {param firstRow: $firstRow /}
+        {param config: $config /}
         {param errors: $errors /}
     {/call}
-    
-    {literal}
-      <script>
-        AJS.$("input#url").css('max-width', '500px');
-
-        AJS.$('input#use_auth').on('change', function() {
-            if ( AJS.$('input#use_auth').prop('checked') ) {
-                AJS.$("input#user").attr('disabled', null).attr('class','text')
-                AJS.$("input#pass").attr('disabled', null).attr('class','text')
-            } else {
-                AJS.$("input#user").attr('disabled', 'true').attr('class','text disabled')
-                AJS.$("input#pass").attr('disabled', 'true').attr('class','text disabled')
-            }
-        });
-        
-        AJS.$('input#use_auth').trigger('change');  
-        
-        // GET http://espc80:7990/stash
-        //       /rest/api/1.0/projects/PROJECT_1/repos/rep_1
-        //       /settings/hooks
-        //       /de.aeffle.stash.plugin.stash-http-get-post-receive-hook:http-get-post-receive-hook
-        //       /settings
-        // 
-        // returns:       
-        //       {"url":"http://aeffle.de/","use_auth":true,"user":"test","pass":"test"}
-        
-      </script>
-    {/literal}
-
-    
+  {/for}
+  
 {/template}

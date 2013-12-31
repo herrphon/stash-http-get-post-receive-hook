@@ -1,49 +1,49 @@
 {namespace de.aeffle.stash.plugin.hook}
 
 
-
 /**
  * Location Settings
  * @param id Id
- * @param url Url
- * @param useAuth UseAuth
- * @param user Username
- * @param pass Password
+ * @param firstRow Is the first row
+ * @param config Config
  * @param? errors Errors
  */    
 {template .locationSettings}
-    <input type="hidden" name="id" value="{$id}" />
+    {let $urlName: ($firstRow ? 'url' : 'url' + $id) /}
+    {let $useAuthName: ($firstRow ? 'useAuth' : 'useAuth' + $id) /}    
+    {let $userName: ($firstRow ? 'user' : 'user' + $id) /}
+    {let $passName: ($firstRow ? 'pass' : 'pass' + $id) /}
 
+    <b> {$id} </b>
     {call aui.form.textField}
-        {param id: 'url' /}
-        {param value: $url /}
+        {param id: $urlName /}
+        {param value: $config[$urlName] /}
         {param labelContent: 'URL'  /}
         {param descriptionText: 'Address for the HTTP GET request.' /}
         {param extraClass: 'long-field' /}
-        {param errorTexts: $errors ? $errors['url'] : null /}
+        {param errorTexts: $errors ? $errors[$urlName] : null /}
     {/call}
     {call widget.aui.form.checkbox}
-        {param id: 'use_auth' /}
-        {param checked: $useAuth /}
+        {param id: $useAuthName /}
+        {param checked: $config[$useAuthName] /}
         {param labelHtml: 'Use Authentication' /}
         {param description: 'Check if the URL needs authentication.' /}
-        {param errorTexts: $errors ? $errors['use_auth'] : null /}
+        {param errorTexts: $errors ? $errors[$useAuthName] : null /}
     {/call}
     {call aui.form.textField}
-        {param id: 'user' /}
-        {param value: $user /}
+        {param id: $userName /}
+        {param value: $config[$userName] /}
         {param labelContent: 'Username'  /}
         {param descriptionText: 'User for the authentication.' /}
         {param idDisabled: true /} 
-        {param errorTexts: $errors ? $errors['user'] : null /}
+        {param errorTexts: $errors ? $errors[$userName] : null /}
     {/call}
     {call aui.form.passwordField}
-        {param id: 'pass' /}
-        {param value: $pass /}
+        {param id: $passName /}
+        {param value: $config[$passName] /}
         {param labelContent: 'Password'  /}
         {param descriptionText: 'Password for the authentication.' /}
         {param disabled: true /}
-        {param errorTexts: $errors ? $errors['pass'] : null /}
+        {param errorTexts: $errors ? $errors[$passName] : null /}
     {/call}
 {/template}
-
