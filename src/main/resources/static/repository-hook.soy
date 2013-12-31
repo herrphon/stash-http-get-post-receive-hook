@@ -7,22 +7,36 @@
  * @param? errors
  */
 {template .configuration}
-  {let $rowNumbers: 3 /}
-  <input type="hidden" name="rowNumbers" id="rowNumbers" value="{$rowNumbers}" />
+  {let $rowCountName: 'rowCount' /}
+  {let $rowCount: ($config[$rowCountName] ? $config[$rowCountName] : 1) /}
   
-  {for $id in range(1, $rowNumbers + 1)}
-    {let $firstRow: $id == 1 /}
+  <input type="text" name="{$rowCountName}" id="{$rowCountName}" value="{$rowCount}" />
+  
+  {for $i in range(0, $rowCount)}
+    {let $id: $i + 1 /}
+    {let $isFirstRow: $i == 0 /}
 
-    {if not $firstRow}
-      <hr>
-    {/if}
+    {call .seperator}
+        {param isFirstRow: $isFirstRow /}
+    {/call}
     
     {call .locationSettings}
         {param id: $id /}
-        {param firstRow: $firstRow /}
+        {param isFirstRow: $isFirstRow /}
         {param config: $config /}
         {param errors: $errors /}
     {/call}
   {/for}
   
+{/template}
+
+
+
+/**
+ * @param isFirstRow
+ */
+{template .seperator}
+    {if not $isFirstRow}
+      <hr>
+    {/if}
 {/template}

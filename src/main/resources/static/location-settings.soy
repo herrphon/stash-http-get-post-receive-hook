@@ -4,15 +4,15 @@
 /**
  * Location Settings
  * @param id Id
- * @param firstRow Is the first row
+ * @param isFirstRow Is the first row
  * @param config Config
  * @param? errors Errors
  */    
 {template .locationSettings}
-    {let $urlName: ($firstRow ? 'url' : 'url' + $id) /}
-    {let $useAuthName: ($firstRow ? 'useAuth' : 'useAuth' + $id) /}    
-    {let $userName: ($firstRow ? 'user' : 'user' + $id) /}
-    {let $passName: ($firstRow ? 'pass' : 'pass' + $id) /}
+    {let $urlName: ($isFirstRow ? 'url' : 'url' + $id) /}
+    {let $useAuthName: ($isFirstRow ? 'useAuth' : 'useAuth' + $id) /}    
+    {let $userName: ($isFirstRow ? 'user' : 'user' + $id) /}
+    {let $passName: ($isFirstRow ? 'pass' : 'pass' + $id) /}
 
     <b> {$id} </b>
     {call aui.form.textField}
