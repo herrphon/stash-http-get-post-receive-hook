@@ -19,6 +19,7 @@
     <resource type="download" name="stash-http-get-post-receive-hook.js" location="/js/stash-http-get-post-receive-hook.js"/>
     <resource type="download" name="images/" location="/images"/>
     <context>stash-http-get-post-receive-hook</context>
+    <context>stash.page.repository.settings.hooks</context>
   </web-resource>
   
   <!--  some soy stuff :-) -->

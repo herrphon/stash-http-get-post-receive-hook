@@ -73,6 +73,31 @@ public class HttpGetPostReceiveHook implements AsyncPostReceiveRepositoryHook,
 				errors.addFieldError("url", "Url was malformed.");
 			}
 		}
+		
+		String rowCount = settings.getString("rowCount", "1");
+		if (rowCountIsSmallerThanOne(rowCount)) {
+			errors.addFieldError("rowCount", "Row cannot be smaller than 1.");
+		}
+		if (rowCountIsLargerThanLimit(rowCount, 10)) {
+			errors.addFieldError("rowCount", "Row should be less than 10.");
+		}
+	}
+	
+	private boolean rowCountIsSmallerThanOne(String rowCountString) {
+		int rowCount = Integer.parseInt(rowCountString);
 
+		if (rowCount < 1) {
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean rowCountIsLargerThanLimit(String rowCountString, int limit) {
+		int rowCount = Integer.parseInt(rowCountString);		
+
+		if (rowCount > limit) {
+			return true;
+		}
+		return false;
 	}
 }

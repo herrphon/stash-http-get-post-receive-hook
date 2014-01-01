@@ -10,15 +10,16 @@
   {let $rowCountName: 'rowCount' /}
   {let $rowCount: ($config[$rowCountName] ? $config[$rowCountName] : 1) /}
   
-  <input type="text" name="{$rowCountName}" id="{$rowCountName}" value="{$rowCount}" />
-  
+  {call .rowCountSelector}
+    {param rowCountName: $rowCountName /}
+    {param rowCount: $rowCount /}
+    {param errors: $errors /}
+  {/call}
+    
+    
   {for $i in range(0, $rowCount)}
     {let $id: $i + 1 /}
     {let $isFirstRow: $i == 0 /}
-
-    {call .seperator}
-        {param isFirstRow: $isFirstRow /}
-    {/call}
     
     {call .locationSettings}
         {param id: $id /}
@@ -28,15 +29,45 @@
     {/call}
   {/for}
   
-{/template}
+  {literal}
+    <script>
+        AJS.$("input#url").css('max-width', '500px');
 
+        AJS.$('input#useAuth').on('change', function() {
+            if ( AJS.$('input#use_auth').prop('checked') ) {
+                AJS.$("input#user").attr('disabled', null).attr('class','text')
+                AJS.$("input#pass").attr('disabled', null).attr('class','text')
+            } else {
+                AJS.$("input#user").attr('disabled', 'true').attr('class','text disabled')
+                AJS.$("input#pass").attr('disabled', 'true').attr('class','text disabled')
+            }
+        });
+        
+        AJS.$('input#useAuth').trigger('change');      
+    </script>
+  {/literal}
+    
+{/template}
 
 
 /**
- * @param isFirstRow
+ * @param rowCountName
+ * @param rowCount
+ * @param? errors
  */
-{template .seperator}
-    {if not $isFirstRow}
-      <hr>
+{template .rowCountSelector}
+  <p>
+    <select name="{$rowCountName}" id="{$rowCountName}">
+    {for $i in range(1, 6)} 
+      {let $selectedAttribute: ($rowCount == $i ? 'selected' : '') /}
+      <option value="{$i}" {$selectedAttribute}>{$i}</option>
+    {/for}
+    </select>
+    
+    {if $errors}
+      {$errors[$rowCountName]}
     {/if}
+  </p>
+  <hr>
 {/template}
+
