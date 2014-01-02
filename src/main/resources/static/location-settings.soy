@@ -13,18 +13,20 @@
     {let $useAuthName: ($isFirstRow ? 'useAuth' : 'useAuth' + $id) /}    
     {let $userName: ($isFirstRow ? 'user' : 'user' + $id) /}
     {let $passName: ($isFirstRow ? 'pass' : 'pass' + $id) /}
-
+    {let $locationClass: 'location' + $id /}
+    
     {call .seperator}
         {param isFirstRow: $isFirstRow /}
     {/call}
     
-    <b> {$id} </b>
+    <b> Location {$id}: </b>
     {call aui.form.textField}
         {param id: $urlName /}
         {param value: $config[$urlName] /}
         {param labelContent: 'URL'  /}
         {param descriptionText: 'Address for the HTTP GET request.' /}
-        {param extraClass: 'long-field' /}
+        {param isLongLabels: true /}
+        {param extraClass: $locationClass /}
         {param errorTexts: $errors ? $errors[$urlName] : null /}
     {/call}
     {call widget.aui.form.checkbox}
@@ -62,16 +64,3 @@
       <hr>
     {/if}
 {/template}
-
-
-/**
- * @param id
- * @param value
- * @param labelContent
- * @param descriptionText
- * @param errorTexts
- * @param extraClass
- */
-{template .myTextField}
-
-{/template}    

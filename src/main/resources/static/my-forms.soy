@@ -1,0 +1,48 @@
+{namespace de.aeffle.stash.plugin.hook}
+
+/**
+ * TextField which is working in contrast to the AUI one...
+ * @param id
+ * @param labelContent
+ * @param descriptionText
+ * @param? value
+ * @param? errorTexts
+ * @param? extraClass
+ * @param? isLongLabels 
+ */
+{template .myTextField}
+    {let $longAttribute: ( $isLongLabels ? ' long-field' : '' ) /}
+    {let $extraClassAttribute: ( $extraClass ? ' ' + $extraClass : '' ) /}
+    {let $valueAttribute: ( $value ? 'value="' + $value + '"' : '' ) /} 
+    
+    <div class="field-group">
+       <label for="{$id}">{$labelContent}</label>
+        <input id="{$id}" class="text{$longAttribute}{$extraClassAttribute}" type="text" name="{$id}" {$valueAttribute}/>
+        <div class="description">{$descriptionText}</div>
+        {if $errorTexts}<div class="error">{$errorTexts}</div>{/if}
+    </div>
+{/template}    
+
+
+
+/**
+ * @param rowCountName
+ * @param rowCount
+ * @param? errors
+ */
+{template .rowCountSelector}
+  <p>
+    <select name="{$rowCountName}" id="{$rowCountName}">
+    {for $i in range(1, 6)} 
+      {let $selectedAttribute: ($rowCount == $i ? 'selected' : '') /}
+      <option value="{$i}" {$selectedAttribute}>{$i}</option>
+    {/for}
+    </select>
+    
+    {if $errors and $errors[$rowCountName]}
+      {$errors[$rowCountName]}
+    {/if}
+  </p>
+  <hr>
+{/template}
+
