@@ -39,7 +39,7 @@ public class HttpGetPostReceiveHook implements AsyncPostReceiveRepositoryHook,
 		
 		Collection<HttpLocation> httpLocations = HttpLocation.getAllFromContext(context);
 		
-		for(HttpLocation httpLocation: httpLocations){
+		for (HttpLocation httpLocation: httpLocations) {
 			UrlTemplateTranslator urlTemplateTranslator = new UrlTemplateTranslator();
 			urlTemplateTranslator.addStashAuthenticationContext(authenticationContext);
 			urlTemplateTranslator.transform(httpLocation);
