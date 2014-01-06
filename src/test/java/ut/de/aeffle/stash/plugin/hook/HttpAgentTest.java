@@ -2,7 +2,6 @@ package ut.de.aeffle.stash.plugin.hook;
 
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
-import static org.mockito.Matchers.*;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -19,7 +18,6 @@ public class HttpAgentTest {
 	private HttpLocation getHttpLocationMockWithAuth() {
 		RepositoryHookContextMockFactory contextFactory = new RepositoryHookContextMockFactory();
 		contextFactory.prepareIntSetting("version", 2);
-		contextFactory.prepareStringSetting("url", 1, "http://test.de");
 		contextFactory.prepareBooleanSetting("useAuth", 1, true);
 		contextFactory.prepareStringSetting("user", 1, "john.doe");
 		contextFactory.prepareStringSetting("pass", 1, "secret");
@@ -30,7 +28,6 @@ public class HttpAgentTest {
 	private HttpLocation getHttpLocationMockWithoutAuth() {
 		RepositoryHookContextMockFactory contextFactory = new RepositoryHookContextMockFactory();
 		contextFactory.prepareIntSetting("version", 2);
-		contextFactory.prepareStringSetting("url", 1, "http://test.de");
 		contextFactory.prepareBooleanSetting("useAuth", 1, false);
 
 		return contextFactory.getFirstHttpLocation();
@@ -67,6 +64,27 @@ public class HttpAgentTest {
 		try {
 			HttpURLConnection connection = mock(HttpURLConnection.class);
 			when(connection.getResponseCode()).thenReturn(HttpURLConnection.HTTP_OK);
+			
+			httpAgent.setConnection(connection);
+			httpAgent.doPageRequest();
+
+			verify(connection, times(1)).connect();
+			verify(connection, times(1)).setRequestProperty("Authorization", "Basic am9obi5kb2U6c2VjcmV0");
+			
+		} catch (IOException e) {
+			fail("IOException");
+		}
+	}
+
+	@Test
+	public void testDoBadPageRequestWithAuth() {
+		HttpLocation httpLocation = getHttpLocationMockWithAuth();
+		HttpAgent httpAgent = new HttpAgent(httpLocation);
+
+
+		try {
+			HttpURLConnection connection = mock(HttpURLConnection.class);
+			when(connection.getResponseCode()).thenReturn(HttpURLConnection.HTTP_BAD_REQUEST);
 			
 			httpAgent.setConnection(connection);
 			httpAgent.doPageRequest();
