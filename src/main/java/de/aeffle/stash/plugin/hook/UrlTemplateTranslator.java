@@ -16,12 +16,27 @@ import com.atlassian.stash.user.StashUser;
 public class UrlTemplateTranslator {
 	private Map<String, String> translationMap;
 
-	public UrlTemplateTranslator() {
+	public UrlTemplateTranslator(
+			StashAuthenticationContext stashAuthenticationContext,
+			RepositoryHookContext repositoryHookContext,
+			Collection<RefChange> refChanges) {
 		translationMap = new HashMap<String, String>();
+		
+		if (stashAuthenticationContext != null) { 
+			addStashAuthenticationContext(stashAuthenticationContext);
+		}
+		
+		if (repositoryHookContext != null) {
+			addRepositoryHookContext(repositoryHookContext);
+		}
+		
+		if (refChanges != null) {
+			addRefChanges(refChanges);
+		}
 	}
 
-	public void addStashRepositoryHookContext(RepositoryHookContext context) {
-		Repository repository = context.getRepository();
+	public void addRepositoryHookContext(RepositoryHookContext repositoryHookContext) {
+		Repository repository = repositoryHookContext.getRepository();
 		addTranslation("repository.id", repository.getId().toString());
 		addTranslation("repository.name", repository.getName());
 		addTranslation("repository.slug", repository.getSlug());
@@ -29,14 +44,14 @@ public class UrlTemplateTranslator {
 		addTranslation("project.key", repository.getProject().getKey());
 	}
 
-	public void addStashAuthenticationContext(StashAuthenticationContext authenticationContext) {
-		StashUser user = authenticationContext.getCurrentUser();
+	public void addStashAuthenticationContext(StashAuthenticationContext stashAuthenticationContext) {
+		StashUser user = stashAuthenticationContext.getCurrentUser();
 		addTranslation("user.name", user.getName());
 		addTranslation("user.displayName", user.getDisplayName());
 		addTranslation("user.email", user.getEmailAddress());
 	}
 	
-	public void addStashRefChanges(Collection<RefChange> refChanges) {
+	public void addRefChanges(Collection<RefChange> refChanges) {
 		Iterator<RefChange> iterator = refChanges.iterator();
 		while (iterator.hasNext()) {
 			RefChange refChange = iterator.next();

@@ -1,55 +1,126 @@
 package ut.de.aeffle.stash.plugin.hook;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Collection;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import ut.de.aeffle.stash.plugin.hook.helper.RepositoryHookContextMockFactory;
+import ut.de.aeffle.stash.plugin.hook.helper.StashAuthenticationContextMockFactory;
+
 import com.atlassian.stash.hook.repository.RepositoryHookContext;
-import com.atlassian.stash.setting.Settings;
+import com.atlassian.stash.repository.RefChange;
 import com.atlassian.stash.user.StashAuthenticationContext;
-import com.atlassian.stash.user.StashUser;
 
 import de.aeffle.stash.plugin.hook.HttpLocation;
 import de.aeffle.stash.plugin.hook.UrlTemplateTranslator;
 
+
 public class UrlTemplateTranslatorTest {
 	
-	private HttpLocation httpLocation;
-	private StashAuthenticationContext authenticationContext;
-	
-	@Before
-	public void setUp() throws Exception {
-		RepositoryHookContext contextMock = mock(RepositoryHookContext.class);
-		Settings settings = mock(Settings.class);
-		when(contextMock.getSettings()).thenReturn(settings);
-		when(settings.getString("url")).thenReturn("http://doe.com/${user.name}");
-		
-		Collection<HttpLocation> httpLocations = HttpLocation.getAllFromContext(contextMock);
-		
-		for (HttpLocation httpLocation: httpLocations) {
-			this.httpLocation = httpLocation;
-		}
+	private RepositoryHookContextMockFactory contextFactory = new RepositoryHookContextMockFactory();
+	private StashAuthenticationContextMockFactory authenticationContextFactory = new StashAuthenticationContextMockFactory();
 
-		authenticationContext = mock(StashAuthenticationContext.class);
-		StashUser user = mock(StashUser.class);
-		when(authenticationContext.getCurrentUser()).thenReturn(user);
-		when(user.getDisplayName()).thenReturn("John Doe");
-		when(user.getEmailAddress()).thenReturn("john@doe.com");
-		when(user.getName()).thenReturn("john.doe");
+    @Before
+    public void beforeTestClearSettings() {
+    	contextFactory.clear();
+    	authenticationContextFactory.clear();
 	}
+	
 
 	@Test
-	public void testTransform() {
-		UrlTemplateTranslator translator = new UrlTemplateTranslator();
-		translator.addStashAuthenticationContext(authenticationContext);
+	public void testTransformWithDisplayName() {
+    	contextFactory.prepareStringSetting("url", "http://doe.com/${user.displayName}");
+ 		authenticationContextFactory.setDisplayName("John_Doe");
+    	
+		HttpLocation httpLocation = contextFactory.getFirstHttpLocation();
+		
+		StashAuthenticationContext stashAuthenticationContext = authenticationContextFactory.getContext();
+		RepositoryHookContext repositoryHookContext = contextFactory.getContext();
+		Collection<RefChange> refChanges = null;
+		
+		UrlTemplateTranslator translator = new UrlTemplateTranslator(stashAuthenticationContext, repositoryHookContext, refChanges);
+		translator.addStashAuthenticationContext(stashAuthenticationContext);
+		translator.transform(httpLocation);
+
+		assertEquals("http://doe.com/John_Doe", httpLocation.getUrl());
+	}
+	
+	@Test
+	public void testTransformWithUserName() {
+    	contextFactory.prepareStringSetting("url", "http://doe.com/${user.name}");
+ 		authenticationContextFactory.setName("john.doe");
+    	
+		HttpLocation httpLocation = contextFactory.getFirstHttpLocation();
+		
+		StashAuthenticationContext stashAuthenticationContext = authenticationContextFactory.getContext();
+		RepositoryHookContext repositoryHookContext = contextFactory.getContext();
+		Collection<RefChange> refChanges = null;
+		
+		UrlTemplateTranslator translator = new UrlTemplateTranslator(stashAuthenticationContext, repositoryHookContext, refChanges);
+		translator.addStashAuthenticationContext(stashAuthenticationContext);
 		translator.transform(httpLocation);
 
 		assertEquals("http://doe.com/john.doe", httpLocation.getUrl());
-		
 	}
+	
+	@Test
+	public void testTransformWithEmail() {
+    	contextFactory.prepareStringSetting("url", "http://doe.com/${user.email}");
+ 		authenticationContextFactory.setEmailAddress("john@doe.de");
+    	
+		HttpLocation httpLocation = contextFactory.getFirstHttpLocation();
+		
+		StashAuthenticationContext stashAuthenticationContext = authenticationContextFactory.getContext();
+		RepositoryHookContext repositoryHookContext = contextFactory.getContext();
+		Collection<RefChange> refChanges = null;
+		
+		UrlTemplateTranslator translator = new UrlTemplateTranslator(stashAuthenticationContext, repositoryHookContext, refChanges);
+		translator.addStashAuthenticationContext(stashAuthenticationContext);
+		translator.transform(httpLocation);
+
+		assertEquals("http://doe.com/john@doe.de", httpLocation.getUrl());
+	}
+	
+	@Test
+	public void testTransformWithRepository() {
+    	contextFactory.prepareStringSetting("url", "http://doe.com/${repository.id}/${repository.name}/${repository.slug}");
+ 		contextFactory.setRepositoryId(1);
+ 		contextFactory.setRepositoryName("Test Repository");
+ 		contextFactory.setRepositorySlug("REPO");
+    	
+		HttpLocation httpLocation = contextFactory.getFirstHttpLocation();
+		
+		StashAuthenticationContext stashAuthenticationContext = authenticationContextFactory.getContext();
+		RepositoryHookContext repositoryHookContext = contextFactory.getContext();
+		Collection<RefChange> refChanges = null;
+		
+		UrlTemplateTranslator translator = new UrlTemplateTranslator(stashAuthenticationContext, repositoryHookContext, refChanges);
+		translator.addStashAuthenticationContext(stashAuthenticationContext);
+		translator.transform(httpLocation);
+
+		assertEquals("http://doe.com/1/Test Repository/REPO", httpLocation.getUrl());
+	}
+
+	@Test
+	public void testTransformWithProject() {
+    	contextFactory.prepareStringSetting("url", "http://doe.com/${project.name}/${project.key}");
+    	contextFactory.setProjectKey("PROJECT");
+    	contextFactory.setProjectName("Test Project");
+    	
+		HttpLocation httpLocation = contextFactory.getFirstHttpLocation();
+		
+		StashAuthenticationContext stashAuthenticationContext = authenticationContextFactory.getContext();
+		RepositoryHookContext repositoryHookContext = contextFactory.getContext();
+		Collection<RefChange> refChanges = null;
+		
+		UrlTemplateTranslator translator = new UrlTemplateTranslator(stashAuthenticationContext, repositoryHookContext, refChanges);
+		translator.addStashAuthenticationContext(stashAuthenticationContext);
+		translator.transform(httpLocation);
+
+		assertEquals("http://doe.com/Test Project/PROJECT", httpLocation.getUrl());
+	}
+	
 }

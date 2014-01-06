@@ -21,41 +21,59 @@ public class HttpGetPostReceiveHook implements AsyncPostReceiveRepositoryHook,
 
 	private static final Logger.Log log = Logger
 			.getInstance(HttpGetPostReceiveHook.class);
-	private final StashAuthenticationContext authenticationContext;
+	private final StashAuthenticationContext stashAuthenticationContext;
 
-	public HttpGetPostReceiveHook(StashAuthenticationContext authenticationContext) {
-		this.authenticationContext = authenticationContext;
+	public HttpGetPostReceiveHook(
+			StashAuthenticationContext authenticationContext) {
+		this.stashAuthenticationContext = authenticationContext;
 	}
-	
-	
+
 	/**
 	 * Connects to a configured URL to notify of all changes.
 	 */
 	@Override
-	public void postReceive(RepositoryHookContext context,
+	public void postReceive(RepositoryHookContext repositoryHookContext,
 			Collection<RefChange> refChanges) {
 		log.debug("Http Get Post Receive Hook started.");
-		log.debug("User: " + this.authenticationContext.getCurrentUser().getName());
-		
-		Collection<HttpLocation> httpLocations = HttpLocation.getAllFromContext(context);
-		
-		for (HttpLocation httpLocation: httpLocations) {
-			UrlTemplateTranslator urlTemplateTranslator = new UrlTemplateTranslator();
-			urlTemplateTranslator.addStashAuthenticationContext(authenticationContext);
-			urlTemplateTranslator.transform(httpLocation);
-			
+		log.debug("User: " + this.stashAuthenticationContext.getCurrentUser().getName());
+
+		Collection<HttpLocation> httpLocations = HttpLocation.getAllFromContext(repositoryHookContext);
+
+		for (HttpLocation httpLocation : httpLocations) {
+			UrlTemplateTranslator translator = new UrlTemplateTranslator(stashAuthenticationContext, repositoryHookContext, refChanges);
+
+			translator.transform(httpLocation);
+
 			HttpAgent httpAgent = new HttpAgent(httpLocation);
 			httpAgent.doPageRequest();
 		}
-		
+
 	}
 
 	@Override
 	public void validate(Settings settings, SettingsValidationErrors errors,
 			Repository repository) {
-		String urlString = settings.getString("url", "");
+
+		int locationCount = settings.getInt("locationCount", 1);
+
+		if (locationCountIsSmallerThanOne(locationCount)
+				|| locationCountIsLargerThanLimit(locationCount, 10)) {
+			errors.addFieldError("locationCount",
+					"Location has to be in the range from 1 to 10.");
+		} else {
+			for (int i = 1; i <= locationCount; i++) {
+				validateUrl(i, settings, errors);
+			}
+		}
+	}
+
+	private void validateUrl(int id, Settings settings,
+			SettingsValidationErrors errors) {
+		String urlName = (id > 1 ? "url" + id : "url");
+		String urlString = settings.getString(urlName, "");
+
 		if (urlString.isEmpty()) {
-			errors.addFieldError("url",
+			errors.addFieldError(urlName,
 					"Url field is blank, please supply one.");
 		} else {
 			try {
@@ -66,36 +84,24 @@ public class HttpGetPostReceiveHook implements AsyncPostReceiveRepositoryHook,
 				validProtocols.add("https");
 
 				if (!validProtocols.contains(protocol)) {
-					errors.addFieldError("url",
+					errors.addFieldError(urlName,
 							"Url did not contain a valid http(s) URL.");
 				}
 			} catch (MalformedURLException e) {
-				errors.addFieldError("url", "Url was malformed.");
+				errors.addFieldError(urlName, "Url was malformed.");
 			}
 		}
-		
-		String rowCount = settings.getString("rowCount", "1");
-		if (rowCountIsSmallerThanOne(rowCount)) {
-			errors.addFieldError("rowCount", "Row cannot be smaller than 1.");
-		}
-		if (rowCountIsLargerThanLimit(rowCount, 10)) {
-			errors.addFieldError("rowCount", "Row should be less than 10.");
-		}
 	}
-	
-	private boolean rowCountIsSmallerThanOne(String rowCountString) {
-		int rowCount = Integer.parseInt(rowCountString);
 
-		if (rowCount < 1) {
+	private boolean locationCountIsSmallerThanOne(int locationCount) {
+		if (locationCount < 1) {
 			return true;
 		}
 		return false;
 	}
-	
-	private boolean rowCountIsLargerThanLimit(String rowCountString, int limit) {
-		int rowCount = Integer.parseInt(rowCountString);		
 
-		if (rowCount > limit) {
+	private boolean locationCountIsLargerThanLimit(int locationCount, int limit) {
+		if (locationCount > limit) {
 			return true;
 		}
 		return false;

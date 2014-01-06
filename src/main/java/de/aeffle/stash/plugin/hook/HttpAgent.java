@@ -14,48 +14,54 @@ import com.atlassian.extras.common.log.Logger;
 public class HttpAgent {
 	private static final Logger.Log log = Logger
 			.getInstance(HttpGetPostReceiveHook.class);
-	private HttpURLConnection connection;
-	private String url;
+	private String urlString;
+	private HttpURLConnection httpURLConnection;
 	private String user;
 	private String pass;
-	private Boolean use_auth;
+	private Boolean useAuth;
 
 	public HttpAgent(HttpLocation httpLocation) {
-		
-		url = httpLocation.getUrl();
+		urlString = httpLocation.getUrl();
+
+		useAuth = httpLocation.getUseAuth();
+
 	    user = httpLocation.getUser();
 	    pass = httpLocation.getPass();
-	    use_auth = httpLocation.getUseAuth();
 	    
-		log.info("The following URL was found: " + url);
-
+		log.info("Http request with URL: " + urlString);
 	}
 
+	public void setConnection(HttpURLConnection httpURLConnection) {
+		this.httpURLConnection = httpURLConnection;
+	}
 	
-	public void authenticate(String user, String pass) {
+	private void authenticate(String user, String pass) {
 		log.info("Authentication was enabled with user: " + user);
+		
 		// build the auth string
 		String authString = user + ":" + pass;
-		String authStringEnc = new String(Base64.encodeBase64(authString
-				.getBytes()));
-		connection
-				.setRequestProperty("Authorization", "Basic " + authStringEnc);
+		String authStringEnc = new String(Base64.encodeBase64(authString.getBytes()));
+		
+		httpURLConnection.setRequestProperty("Authorization", "Basic " + authStringEnc);
 	}
 
 	
 	public void doPageRequest() {
 		try {
-			URL url = new URL(this.url);
-			connection = (HttpURLConnection) url.openConnection();
-			connection.setReadTimeout(5000);
-			connection.setInstanceFollowRedirects(true);
+			if (httpURLConnection == null) {
+				URL url = new URL(urlString);
+				httpURLConnection = createHttpURLConnection(url);
+			}
+			
+			httpURLConnection.setReadTimeout(5000);
+			httpURLConnection.setInstanceFollowRedirects(true);
 			HttpURLConnection.setFollowRedirects(true);
 			
-			if (use_auth == true) {
+			if (useAuth == true) {
 				authenticate(user, pass);
 			}
 			
-			connection.connect();
+			httpURLConnection.connect();
 			checkResponse();
 			log.debug("HTTP response:\n" + getPageContent());
 			
@@ -68,10 +74,15 @@ public class HttpAgent {
 		}
 	}
 
+	private HttpURLConnection createHttpURLConnection(URL url) throws IOException{
+	    return (HttpURLConnection)url.openConnection();
+
+	}
+	
 	private String getPageContent() throws IOException {
 		// Get HTTP Response Body
 		BufferedReader buffer = new BufferedReader(new InputStreamReader(
-				connection.getInputStream()));
+				httpURLConnection.getInputStream()));
 		String inputLine;
 		StringBuffer body = new StringBuffer();
 
@@ -86,7 +97,7 @@ public class HttpAgent {
 
 	private void checkResponse() throws IOException {
 		// Get HTTP Response Code
-		int responseCode = connection.getResponseCode();
+		int responseCode = httpURLConnection.getResponseCode();
 		if (responseCode != HttpURLConnection.HTTP_OK) {
 			log.error("Problem with the HTTP connection with response code: "
 					+ responseCode);

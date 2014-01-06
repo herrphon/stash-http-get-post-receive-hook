@@ -1,21 +1,27 @@
-{namespace de.aeffle.stash.plugin.hook}si
+{namespace de.aeffle.stash.plugin.hook}
+
+// https://developers.google.com/closure/templates/docs/commands
 
 /**
  * @param config
  * @param? errors
  */
 {template .configuration}
-  {let $rowCountName: 'rowCount' /}
-  {let $rowCount: ($config[$rowCountName] ? $config[$rowCountName] : 1) /}
+  {call .version}
+    {param version: 2 /}
+  {/call}
   
-  {call .rowCountSelector}
-    {param rowCountName: $rowCountName /}
-    {param rowCount: $rowCount /}
+  {let $locationCountName: 'locationCount' /}
+  {let $locationCount: ($config[$locationCountName] ? $config[$locationCountName] : 1) /}
+  
+  {call .locationCountSelector}
+    {param locationCountName: $locationCountName /}
+    {param locationCount: $locationCount /}
     {param errors: $errors /}
   {/call}
     
     
-  {for $i in range(0, $rowCount)}
+  {for $i in range(0, $locationCount)}
     {let $id: $i + 1 /}
     {let $isFirstRow: $i == 0 /}
     
@@ -29,7 +35,7 @@
   
 
   <script>
-    {for $i in range(0, $rowCount)}
+    {for $i in range(0, $locationCount)}
       {let $id: $i + 1 /}
       aeffle.addChangeEventTo({$id});
     {/for}

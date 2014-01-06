@@ -1,7 +1,6 @@
 package de.aeffle.stash.plugin.hook;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import com.atlassian.stash.hook.repository.RepositoryHookContext;
 
@@ -13,19 +12,26 @@ public class HttpLocation {
 	private final String pass;
 	private final Boolean useAuth;
 
-	public static Collection<HttpLocation> getAllFromContext(RepositoryHookContext context) {
+	public static ArrayList<HttpLocation> getAllFromContext(RepositoryHookContext context) {
 		HttpLocation.context = context;
-		Collection<HttpLocation> httpGetLocations = new ArrayList<HttpLocation>();
 		
-		HttpLocation first = new HttpLocation(1); 
+		ArrayList<HttpLocation> httpGetLocations = new ArrayList<HttpLocation>();
 		
-		httpGetLocations.add(first);
+		for (int id = 1; id <= getNumberOfHttpLocations(context); id++) { 
+			httpGetLocations.add(new HttpLocation(id));
+		}
+		
 		return httpGetLocations;
 	}
 	
 	private HttpLocation(int id) {
 		String urlString = ( id > 1 ? "url" + id : "url" );
+		
 		String useAuthString = ( id > 1 ? "use_auth" + id : "use_auth" );
+		if (context.getSettings().getInt("version", 1) > 1) {
+			useAuthString = ( id > 1 ? "useAuth" + id : "useAuth" );
+		}
+		
 		String userString = ( id > 1 ? "user" + id : "user" );
 		String passString = ( id > 1 ? "pass" + id : "pass" );
 		
@@ -37,20 +43,17 @@ public class HttpLocation {
 		pass = getConfigString(passString);
 	}
 
-	private static String getConfigString(String name) {
-		return context.getSettings().getString(name);
+	private String getConfigString(String name) {
+		return context.getSettings().getString(name, "");
 	}
 
-	public static Boolean getConfigBoolean(String name) {
-		Boolean b = context.getSettings().getBoolean(name);
-		if (b == null) {
-			b = Boolean.FALSE;
-		}
-		return b;
+	private boolean getConfigBoolean(String name) {
+		return context.getSettings().getBoolean(name, false);
 	}
 	
-	private static int getNumberOfHttpLocations() {
-		return context.getSettings().getInt("rowCount");
+	private static int getNumberOfHttpLocations(RepositoryHookContext context) {
+		 int count = context.getSettings().getInt("locationCount", 1);
+		 return (count > 0 ? count : 1);
     }
 
 	public String getUrlTemplateString() {
@@ -72,8 +75,6 @@ public class HttpLocation {
 	public String getPass() {
 		return pass;
 	}
-
-
 
 	public Boolean getUseAuth() {
 		return useAuth;
