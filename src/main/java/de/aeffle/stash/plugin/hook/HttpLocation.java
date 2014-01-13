@@ -28,7 +28,7 @@ public class HttpLocation {
 		String urlString = ( id > 1 ? "url" + id : "url" );
 		
 		String useAuthString = ( id > 1 ? "use_auth" + id : "use_auth" );
-		if (context.getSettings().getInt("version", 1) > 1) {
+		if (getVersionNumber() > 1) {
 			useAuthString = ( id > 1 ? "useAuth" + id : "useAuth" );
 		}
 		
@@ -43,6 +43,16 @@ public class HttpLocation {
 		pass = getConfigString(passString);
 	}
 
+	private int getVersionNumber() {
+		int version;
+		try {
+			version = Integer.parseInt(context.getSettings().getString("version", "1")); 
+		} catch (Exception e) {
+			version = 1;
+		}
+		return version;
+	}
+
 	private String getConfigString(String name) {
 		return context.getSettings().getString(name, "");
 	}
@@ -52,7 +62,13 @@ public class HttpLocation {
 	}
 	
 	private static int getNumberOfHttpLocations(RepositoryHookContext context) {
-		 int count = context.getSettings().getInt("locationCount", 1);
+		 int count;
+		 try {
+			 count = Integer.parseInt(context.getSettings().getString("locationCount", "1"));
+		 } catch (Exception e) {
+			 count = 1;
+		 }
+		 
 		 return (count > 0 ? count : 1);
     }
 

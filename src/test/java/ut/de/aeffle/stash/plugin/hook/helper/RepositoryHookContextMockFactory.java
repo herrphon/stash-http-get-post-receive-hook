@@ -5,6 +5,8 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 
+import org.mockito.Matchers;
+
 import com.atlassian.stash.hook.repository.RepositoryHookContext;
 import com.atlassian.stash.project.Project;
 import com.atlassian.stash.repository.Repository;
@@ -42,12 +44,30 @@ public class RepositoryHookContextMockFactory {
 		String parameterName = (id > 1 ? parameter + id : parameter);
 		prepareStringSetting(parameterName, value);
 	}
+	
+	public void prepareLocationCount(String value) {
+		String key = "locationCount";
+		if (value != null) {
+			when(settings.getString(key, "1")).thenReturn(value);
+		} else {
+			when(settings.getString(key, "1")).thenReturn("");
+		}
+	}
 
 	public void prepareStringSetting(String key, String value) {
 		if (value != null) {
 			when(settings.getString(key, "")).thenReturn(value);
 		} else {
 			when(settings.getString(key, "")).thenReturn("");
+		}
+	}
+	
+	public void prepareVersion(String value) {
+		String key = "version";
+		if (value != null) {
+			when(settings.getString(key, "1")).thenReturn(value);
+		} else {
+			when(settings.getString(key, "1")).thenReturn("1");
 		}
 	}
 

@@ -68,7 +68,7 @@ public class HttpAgent {
 		} catch (MalformedURLException e) {
 			log.error("Malformed URL:" + e);
 		} catch (IOException e) {
-			log.error("Some IO exception occured", e);
+			log.error("Some IO exception occured " + e.getMessage() + " (" + e.getStackTrace() + ")");
 		} catch (Exception e) {
 			log.error("Something else went wrong: ", e);
 		}

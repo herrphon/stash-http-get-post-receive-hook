@@ -17,7 +17,7 @@ public class HttpAgentTest {
 	
 	private HttpLocation getHttpLocationMockWithAuth() {
 		RepositoryHookContextMockFactory contextFactory = new RepositoryHookContextMockFactory();
-		contextFactory.prepareIntSetting("version", 2);
+		contextFactory.prepareVersion("2");
 		contextFactory.prepareBooleanSetting("useAuth", 1, true);
 		contextFactory.prepareStringSetting("user", 1, "john.doe");
 		contextFactory.prepareStringSetting("pass", 1, "secret");
@@ -27,7 +27,7 @@ public class HttpAgentTest {
 
 	private HttpLocation getHttpLocationMockWithoutAuth() {
 		RepositoryHookContextMockFactory contextFactory = new RepositoryHookContextMockFactory();
-		contextFactory.prepareIntSetting("version", 2);
+		contextFactory.prepareVersion("2");
 		contextFactory.prepareBooleanSetting("useAuth", 1, false);
 
 		return contextFactory.getFirstHttpLocation();

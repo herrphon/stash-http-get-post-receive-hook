@@ -38,7 +38,10 @@ public class HttpGetPostReceiveHook implements AsyncPostReceiveRepositoryHook,
 		log.debug("User: " + this.stashAuthenticationContext.getCurrentUser().getName());
 
 		Collection<HttpLocation> httpLocations = HttpLocation.getAllFromContext(repositoryHookContext);
-
+		
+		int size = httpLocations.size();
+		log.debug("Number of HttpLocations: " + size);
+		
 		for (HttpLocation httpLocation : httpLocations) {
 			UrlTemplateTranslator translator = new UrlTemplateTranslator(stashAuthenticationContext, repositoryHookContext, refChanges);
 
@@ -54,7 +57,12 @@ public class HttpGetPostReceiveHook implements AsyncPostReceiveRepositoryHook,
 	public void validate(Settings settings, SettingsValidationErrors errors,
 			Repository repository) {
 
-		int locationCount = settings.getInt("locationCount", 1);
+		int locationCount;
+		try {
+			locationCount = Integer.parseInt(settings.getString("locationCount", "1"));
+		} catch (Exception e) {
+			locationCount = 1;
+		}
 
 		if (locationCountIsSmallerThanOne(locationCount)
 				|| locationCountIsLargerThanLimit(locationCount, 10)) {

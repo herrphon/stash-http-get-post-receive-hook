@@ -64,7 +64,7 @@ public class HttpLocationTest {
 
 	@Test
 	public void testGetUseAuthTrueV2() {
-		contextFactory.prepareIntSetting("version", 2);
+		contextFactory.prepareVersion("2");
 		contextFactory.prepareBooleanSetting("useAuth", 1, true);
 		
 		assertEquals(true, contextFactory.getFirstHttpLocation().getUseAuth());
@@ -72,7 +72,7 @@ public class HttpLocationTest {
 	
 	@Test
 	public void testgetNumberOfHttpLocationsNull() {
-		contextFactory.prepareIntSetting("locationCount", null);
+		contextFactory.prepareLocationCount(null);
 			
 		ArrayList<HttpLocation> httpLocations = contextFactory.getHttpLocations();
 
@@ -81,7 +81,7 @@ public class HttpLocationTest {
 	
 	@Test
 	public void testgetNumberOfHttpLocations1() {
-		contextFactory.prepareIntSetting("locationCount", 1);
+		contextFactory.prepareLocationCount("1");
 			
 		ArrayList<HttpLocation> httpLocations = contextFactory.getHttpLocations();
 
@@ -90,7 +90,7 @@ public class HttpLocationTest {
 	
 	@Test
 	public void testgetNumberOfHttpLocations3() {
-		contextFactory.prepareIntSetting("locationCount", 3);
+		contextFactory.prepareLocationCount("3");
 		
 		ArrayList<HttpLocation> httpLocations = contextFactory.getHttpLocations();
 
@@ -100,7 +100,7 @@ public class HttpLocationTest {
 
 	@Test
 	public void testGetUrl2() {
-		contextFactory.prepareIntSetting("locationCount",  2);
+		contextFactory.prepareLocationCount("2");
 		contextFactory.prepareStringSetting("url", 2, "http://aeffle.de");
 		
 		ArrayList<HttpLocation> httpLocations = contextFactory.getHttpLocations();
@@ -112,7 +112,7 @@ public class HttpLocationTest {
 	
 	@Test
 	public void testGetUser2() {
-		contextFactory.prepareIntSetting("locationCount",  2);
+		contextFactory.prepareLocationCount("2");
 		contextFactory.prepareStringSetting("user", 2, "john.doe");
 		
 		ArrayList<HttpLocation> httpLocations = contextFactory.getHttpLocations();
@@ -125,7 +125,7 @@ public class HttpLocationTest {
 	
 	@Test
 	public void testGetPass2() {
-		contextFactory.prepareIntSetting("locationCount",  2);
+		contextFactory.prepareLocationCount("2");
 		contextFactory.prepareStringSetting("pass", 2, "secret");
 		
 		ArrayList<HttpLocation> httpLocations = contextFactory.getHttpLocations();
@@ -138,8 +138,8 @@ public class HttpLocationTest {
 	
 	@Test
 	public void testManyLocations() {
-		contextFactory.prepareIntSetting("version", 2);
-		contextFactory.prepareIntSetting("locationCount",  3);
+		contextFactory.prepareVersion("2");
+		contextFactory.prepareLocationCount("3");
 		
 		contextFactory.prepareStringSetting("url", 1, "http://aeffle.de/1");
 		contextFactory.prepareStringSetting("url", 2, "http://aeffle.de/2");
