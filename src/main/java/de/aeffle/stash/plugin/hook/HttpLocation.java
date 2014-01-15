@@ -46,7 +46,8 @@ public class HttpLocation {
 	private int getVersionNumber() {
 		int version;
 		try {
-			version = Integer.parseInt(context.getSettings().getString("version", "1")); 
+			String versionString = context.getSettings().getString("version", "1");
+			version = Integer.parseInt(versionString); 
 		} catch (Exception e) {
 			version = 1;
 		}

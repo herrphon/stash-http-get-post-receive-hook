@@ -36,67 +36,73 @@ public class RepositoryHookContextMockFactory {
 	}
 
 	private void loadDefaults() {
-		prepareIntSetting("version", null);
+		setVersion("1");
 		when(repository.getProject()).thenReturn(project);
 	}
 
-	public void prepareStringSetting(String parameter, int id, String value) {
-		String parameterName = (id > 1 ? parameter + id : parameter);
-		prepareStringSetting(parameterName, value);
+	public void setVersion(String version) {
+		setStringSetting("version", 0, version, "1");
+	}
+
+	public void setLocationCount(String count) {
+		setStringSetting("locationCount", 0, count, "1");
+	}
+
+	public void setUrl(int id, String url) {
+		setStringSetting("url", id, url, "");
 	}
 	
-	public void prepareLocationCount(String value) {
-		String key = "locationCount";
-		if (value != null) {
-			when(settings.getString(key, "1")).thenReturn(value);
-		} else {
-			when(settings.getString(key, "1")).thenReturn("");
-		}
-	}
-
-	public void prepareStringSetting(String key, String value) {
-		if (value != null) {
-			when(settings.getString(key, "")).thenReturn(value);
-		} else {
-			when(settings.getString(key, "")).thenReturn("");
-		}
+	public void setUseAuth(int id, Boolean useAuth) {
+		setBooleanSetting("useAuth", id, useAuth);
 	}
 	
-	public void prepareVersion(String value) {
-		String key = "version";
-		if (value != null) {
-			when(settings.getString(key, "1")).thenReturn(value);
-		} else {
-			when(settings.getString(key, "1")).thenReturn("1");
-		}
+	public void setOldUseAuth(Boolean useAuth) {
+		setBooleanSetting("use_auth", 0, useAuth);
 	}
+	
+	public void setUser(int id, String user) {
+		setStringSetting("user", id, user, "");
+	}
+	
+	public void setPass(int id, String pass) {
+		setStringSetting("pass", id, pass, "");
+	}
+	
+	
 
-	public void prepareBooleanSetting(String parameter, int id, Boolean value) {
+	private void setStringSetting(String parameter, int id, String value, String defaultValue) {
 		String parameterName = (id > 1 ? parameter + id : parameter);
-		prepareBooleanSetting(parameterName, value);
-	}
-
-	public void prepareBooleanSetting(String key, Boolean value) {
+		
 		if (value != null) {
-			when(settings.getBoolean(key, false)).thenReturn(value);
+			when(settings.getString(parameterName, defaultValue)).thenReturn(value);
 		} else {
-			when(settings.getBoolean(key, false)).thenReturn(false);
-		}
+			when(settings.getString(parameterName, defaultValue)).thenReturn(defaultValue);
+		}	
 	}
-
-	public void prepareIntSetting(String parameter, int id, Integer value) {
+	
+	private void setBooleanSetting(String parameter, int id, Boolean value) {
 		String parameterName = (id > 1 ? parameter + id : parameter);
-		prepareIntSetting(parameterName, value);
-	}
 
-	public void prepareIntSetting(String key, Integer value) {
 		if (value != null) {
-			when(settings.getInt(key, 1)).thenReturn(value);
+			when(settings.getBoolean(parameterName, false)).thenReturn(value);
 		} else {
-			when(settings.getInt(key, 1)).thenReturn(1);
+			when(settings.getBoolean(parameterName, false)).thenReturn(false);
 		}
 	}
 
+	// getInt does not work....
+	@SuppressWarnings("unused")
+	private void prepareIntSetting(String parameter, int id, Integer value) {
+		String parameterName = (id > 1 ? parameter + id : parameter);
+
+		if (value != null) {
+			when(settings.getInt(parameterName, 1)).thenReturn(value);
+		} else {
+			when(settings.getInt(parameterName, 1)).thenReturn(1);
+		}
+	}
+
+	
 	public RepositoryHookContext getContext() {
 		return new RepositoryHookContext(repository, settings);
 	}

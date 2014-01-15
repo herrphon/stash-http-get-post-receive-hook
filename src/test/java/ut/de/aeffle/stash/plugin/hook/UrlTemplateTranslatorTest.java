@@ -32,7 +32,7 @@ public class UrlTemplateTranslatorTest {
 
 	@Test
 	public void testTransformWithDisplayName() {
-    	contextFactory.prepareStringSetting("url", "http://doe.com/${user.displayName}");
+    	contextFactory.setUrl(1, "http://doe.com/${user.displayName}");
  		authenticationContextFactory.setDisplayName("John_Doe");
     	
 		HttpLocation httpLocation = contextFactory.getFirstHttpLocation();
@@ -50,7 +50,7 @@ public class UrlTemplateTranslatorTest {
 	
 	@Test
 	public void testTransformWithUserName() {
-    	contextFactory.prepareStringSetting("url", "http://doe.com/${user.name}");
+    	contextFactory.setUrl(1, "http://doe.com/${user.name}");
  		authenticationContextFactory.setName("john.doe");
     	
 		HttpLocation httpLocation = contextFactory.getFirstHttpLocation();
@@ -68,7 +68,7 @@ public class UrlTemplateTranslatorTest {
 	
 	@Test
 	public void testTransformWithEmail() {
-    	contextFactory.prepareStringSetting("url", "http://doe.com/${user.email}");
+    	contextFactory.setUrl(1, "http://doe.com/${user.email}");
  		authenticationContextFactory.setEmailAddress("john@doe.de");
     	
 		HttpLocation httpLocation = contextFactory.getFirstHttpLocation();
@@ -86,7 +86,7 @@ public class UrlTemplateTranslatorTest {
 	
 	@Test
 	public void testTransformWithRepository() {
-    	contextFactory.prepareStringSetting("url", "http://doe.com/${repository.id}/${repository.name}/${repository.slug}");
+    	contextFactory.setUrl(1, "http://doe.com/${repository.id}/${repository.name}/${repository.slug}");
  		contextFactory.setRepositoryId(1);
  		contextFactory.setRepositoryName("Test Repository");
  		contextFactory.setRepositorySlug("REPO");
@@ -106,7 +106,7 @@ public class UrlTemplateTranslatorTest {
 
 	@Test
 	public void testTransformWithProject() {
-    	contextFactory.prepareStringSetting("url", "http://doe.com/${project.name}/${project.key}");
+    	contextFactory.setUrl(1, "http://doe.com/${project.name}/${project.key}");
     	contextFactory.setProjectKey("PROJECT");
     	contextFactory.setProjectName("Test Project");
     	
