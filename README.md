@@ -15,3 +15,9 @@ With this simple plugin you can trigger Jenkins by doing the following and not h
 
 * add the possiblity to trigger multiple URLs
 
+
+## Enable debug logging: ##
+To enable more debug output add the following to the file `./stash/webapp/WEB-INF/classes/logback.xml`
+
+`<!-- Turn on maximum logging for HttpGetPostReceiveHook plugin -->`
+`<logger name="de.aeffle.stash.plugin.hook.HttpGetPostReceiveHook" level="DEBUG"/>`
