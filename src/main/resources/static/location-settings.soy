@@ -29,9 +29,11 @@
         {param extraClass: $locationClass /}
         {param errorTexts: $errors ? $errors[$urlName] : null /}
     {/call}
+    
+    {let $useAuth: $config[$useAuthName] or ($isFirstRow and $config['use_auth']) /}
     {call widget.aui.form.checkbox}
         {param id: $useAuthName /}
-        {param checked: $config[$useAuthName] /}
+        {param checked: $useAuth /}
         {param labelHtml: 'Use Authentication' /}
         {param description: 'Check if the URL needs authentication.' /}
         {param errorTexts: $errors ? $errors[$useAuthName] : null /}

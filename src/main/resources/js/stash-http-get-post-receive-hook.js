@@ -58,9 +58,7 @@ aeffle.addChangeEventTo = function (id) {
 
 aeffle.showSavedData = function () {
     'use strict';
-    var url = AJS.contextPath() +
-              "/rest/api/1.0/projects/PROJECT_1/repos/rep_1" +
-              "/settings/hooks" +
+    var url = document.URL +
               "/de.aeffle.stash.plugin.stash-http-get-post-receive-hook:http-get-post-receive-hook" +
               "/settings";
 
