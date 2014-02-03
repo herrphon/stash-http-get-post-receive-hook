@@ -118,6 +118,21 @@
         <amps.version>4.1.5</amps.version>
         <plugin.testrunner.version>1.1</plugin.testrunner.version>
     </properties>
+	  <repositories>
+	         <repository>
+           <id>atlassian-public</id>
+           <url>https://maven.atlassian.com/repository/public</url>
+           <snapshots>
+             <enabled>true</enabled>
+             <updatePolicy>never</updatePolicy>
+             <checksumPolicy>warn</checksumPolicy>
+           </snapshots>
+           <releases>
+             <enabled>true</enabled>
+             <checksumPolicy>warn</checksumPolicy>
+           </releases>
+         </repository>
+	  </repositories>
     <scm>
         <connection>scm:git:ssh://git@socgit.verigy.net:7999/~alexander.vonrenteln/stash-http-get-post-receive-hook.git</connection>
         <url>http://socgit.verigy.net/stash/users/alexander.vonrenteln/repos/stash-http-get-post-receive-hook/browse</url>
