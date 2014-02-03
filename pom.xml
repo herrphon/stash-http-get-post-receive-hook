@@ -133,6 +133,21 @@
            </releases>
          </repository>
 	  </repositories>
+	  
+	  <pluginRepositories>
+         <pluginRepository>
+           <id>atlassian-public</id>
+           <url>https://m2proxy.atlassian.com/repository/public</url>
+           <releases>
+             <enabled>true</enabled>
+             <checksumPolicy>warn</checksumPolicy>
+           </releases>
+           <snapshots>
+             <checksumPolicy>warn</checksumPolicy>
+           </snapshots>
+         </pluginRepository>
+       </pluginRepositories>
+	   
     <scm>
         <connection>scm:git:ssh://git@socgit.verigy.net:7999/~alexander.vonrenteln/stash-http-get-post-receive-hook.git</connection>
         <url>http://socgit.verigy.net/stash/users/alexander.vonrenteln/repos/stash-http-get-post-receive-hook/browse</url>
